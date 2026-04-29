@@ -172,6 +172,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);overflow-x:hid
 .csh-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0;}
 .csh-title{font-size:13.5px;font-weight:700;color:var(--text);}
 .csh-weight{margin-left:auto;font-family:var(--fm);font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px;}
+
+/* ENHANCED INPUT ROWS */
 .cr-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .cr-row:last-child{margin-bottom:0;}
 .cr-lbl{font-size:12.5px;color:var(--muted);flex:1;line-height:1.3;}
@@ -179,6 +181,36 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);overflow-x:hid
 .cr-num:focus{outline:none;border-color:var(--blue);background:var(--blue-light);}
 .cr-pts{font-family:var(--fm);font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;min-width:38px;text-align:center;border:1px solid;transition:background .25s,color .25s,border-color .25s;}
 .cr-hint{font-size:11px;color:var(--muted2);white-space:nowrap;}
+
+/* RAW INPUT BLOCK — for formula-based sub-inputs */
+.raw-inputs-block{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 16px;margin-bottom:10px;}
+.raw-inputs-block .rib-title{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);font-weight:600;margin-bottom:10px;}
+.rib-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.rib-row:last-child{margin-bottom:0;}
+.rib-lbl{font-size:12px;color:var(--muted);flex:1;}
+.rib-num{padding:5px 9px;border:1px solid var(--border-med);border-radius:7px;font-size:12.5px;font-family:var(--fm);background:#fff;color:var(--text);width:90px;text-align:center;transition:.15s;}
+.rib-num:focus{outline:none;border-color:var(--blue);background:var(--blue-light);}
+.rib-result{background:var(--blue-light);border:1px solid var(--blue-soft);border-radius:var(--r-sm);padding:9px 13px;display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
+.rib-result-lbl{font-size:11.5px;color:var(--blue);font-weight:600;}
+.rib-result-val{font-family:var(--fm);font-size:13px;font-weight:700;color:var(--blue);}
+
+/* DO TARGET BLOCK */
+.do-agents-block{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 16px;margin-bottom:12px;}
+.do-agents-block .dab-title{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);font-weight:600;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.agent-cat-row{display:grid;grid-template-columns:1fr 80px 80px 80px;gap:8px;align-items:center;margin-bottom:8px;font-size:12px;}
+.agent-cat-row:last-child{margin-bottom:0;}
+.agent-cat-lbl{color:var(--muted);}
+.agent-cat-hdr{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);text-align:center;}
+.agent-cat-num{padding:5px;border:1px solid var(--border-med);border-radius:6px;font-size:12px;font-family:var(--fm);background:#fff;color:var(--text);text-align:center;width:100%;}
+.agent-cat-num:focus{outline:none;border-color:var(--blue);}
+.do-totals-row{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.do-total-pill{flex:1;background:var(--surface);border:1px solid var(--border-med);border-radius:8px;padding:8px 12px;text-align:center;}
+.do-total-pill .dtp-lbl{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);display:block;margin-bottom:3px;}
+.do-total-pill .dtp-val{font-family:var(--fm);font-size:14px;font-weight:700;}
+.add-agent-btn{display:flex;align-items:center;gap:5px;padding:5px 11px;border:1px dashed var(--border-med);border-radius:7px;font-size:11.5px;color:var(--muted);cursor:pointer;background:transparent;font-family:var(--ff);transition:.15s;margin-top:8px;}
+.add-agent-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light);}
+.del-agent-btn{width:20px;height:20px;border-radius:50%;border:1px solid var(--red-soft);background:var(--red-light);color:var(--red);font-size:12px;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:.15s;}
+.del-agent-btn:hover{background:var(--red);color:#fff;}
 
 /* SCORE PANEL — static, updated via JS, never rebuilt */
 .score-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);position:sticky;top:78px;}
@@ -236,10 +268,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);overflow-x:hid
 .tl-name-input{flex:1;padding:7px 12px;border:1px solid var(--blue-soft);border-radius:8px;font-size:14px;font-weight:600;font-family:var(--ff);background:#fff;color:var(--text);transition:.15s;max-width:320px;}
 .tl-name-input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
 
-/* SHEETS SAVE BAR */
-.sheets-bar{display:flex;align-items:center;gap:12px;background:var(--green-light);border:1px solid var(--green-soft);border-radius:var(--r-sm);padding:12px 16px;margin-bottom:16px;flex-wrap:wrap;}
-.sheets-url-input{flex:1;padding:7px 12px;border:1px solid var(--green-soft);border-radius:8px;font-size:12px;font-family:var(--fm);background:#fff;color:var(--text);min-width:260px;transition:.15s;}
-.sheets-url-input:focus{outline:none;border-color:var(--green);}
+/* SAVE BAR */
+.save-bar{display:flex;align-items:center;gap:12px;background:var(--green-light);border:1px solid var(--green-soft);border-radius:var(--r-sm);padding:12px 16px;margin-bottom:16px;flex-wrap:wrap;}
 .sheets-save-btn{display:flex;align-items:center;gap:7px;padding:7px 16px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;font-family:var(--ff);cursor:pointer;transition:.2s;white-space:nowrap;}
 .sheets-save-btn:hover{background:#047857;}
 .sheets-save-btn:disabled{opacity:.5;cursor:not-allowed;}
@@ -520,12 +550,12 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);overflow-x:hid
   </div>
 </div>
 
-<!-- MONTHLY SCORE ENTRY — fixed reactive calculator -->
+<!-- MONTHLY SCORE ENTRY -->
 <div id="s-calculator" class="section">
   <div class="ph">
     <div class="ph-eyebrow"><span class="ph-dot" style="background:var(--purple);"></span>Monthly Entry</div>
     <div class="ph-title">Monthly Score Calculator</div>
-    <div class="ph-desc">Enter numbers — score updates live. Use the save button to push to Google Sheets.</div>
+    <div class="ph-desc">Enter raw numbers — rates and scores are calculated automatically.</div>
   </div>
 
   <!-- TL NAME -->
@@ -534,14 +564,13 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);overflow-x:hid
     <input type="text" class="tl-name-input" id="tl-name" placeholder="e.g. Ahmed Hassan" oninput="state.tlName=this.value;updateScorePanel();">
   </div>
 
-  <!-- SHEETS API URL -->
-  <div class="sheets-bar">
+  <!-- SAVE BAR — no URL field, URL is hardcoded -->
+  <div class="save-bar">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
-    <label style="font-size:12px;font-weight:600;color:var(--green);white-space:nowrap;">Apps Script URL:</label>
-    <input type="text" class="sheets-url-input" id="api-url" placeholder="https://script.google.com/macros/s/AKfycbzIuRA_l7FQjM9xe2Xpjww-Ye7sYHZZdcQjlqimH2cbfFtL3nHanC99guoemwhK85mtcg/exec" oninput="state.apiUrl=this.value;saveApiUrl();">
+    <label style="font-size:12px;font-weight:600;color:var(--green);white-space:nowrap;">Save to Google Sheets</label>
     <button class="sheets-save-btn" onclick="saveToSheets()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-      Save to Sheets
+      Save Month to Sheets
     </button>
     <div id="save-status" class="save-status" style="display:none;"></div>
   </div>
@@ -553,12 +582,10 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);overflow-x:hid
     <div class="month-tab" onclick="switchMonth(2,this)">Month 3</div>
   </div>
 
-  <!-- CALCULATOR BODY — inputs stay; only score panel updates -->
+  <!-- CALCULATOR BODY -->
   <div class="calc-layout">
-    <div class="calc-sections" id="calc-inputs">
-      <!-- injected once, then only values are updated -->
-    </div>
-    <!-- SCORE PANEL — never rebuilt, only DOM-patched -->
+    <div class="calc-sections" id="calc-inputs"></div>
+    <!-- SCORE PANEL -->
     <div class="score-panel">
       <div class="sp-month-label" id="sp-month-label">Month 1</div>
       <div class="sp-ring-wrap">
@@ -597,7 +624,7 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);overflow-x:hid
   <div class="ph"><div class="ph-eyebrow"><span class="ph-dot"></span>Reference</div><div class="ph-title">Rating Bands & Formula</div></div>
   <div class="card">
     <div class="ch"><div class="ci" style="background:var(--blue-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div><div class="ct">Full Scoring Formula</div></div></div>
-    <div class="full-formula" style="font-family:var(--fm);font-size:12px;line-height:2.1;color:var(--muted);">
+    <div class="full-formula">
       <span style="color:var(--muted2);font-style:italic;"># Each metric scored 0–4, normalised to its weight</span><br><br>
       <span style="color:var(--blue);">DO_score &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--red);"> = </span>(do_pts / 4) × <span style="color:var(--green);">80</span><br>
       <span style="color:var(--blue);">coaching_score &nbsp;</span><span style="color:var(--red);"> = </span>(coaching_pts / 4) × <span style="color:var(--green);">7</span><br>
@@ -635,18 +662,55 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);overflow-x:hid
 
 <script>
 // ═══════════════════════════════════════════════════════
+//  HARDCODED API URL — paste your deployed Apps Script URL here
+// ═══════════════════════════════════════════════════════
+const API_URL = 'https://script.google.com/macros/s/AKfycbyayF0LONOQt7kNFv7xFCYvwjFXu8PyQhlyxw6nozxS2mC80009CFScgP6jA03QoQkj/exec';
+
+// ═══════════════════════════════════════════════════════
+//  AGENT CATEGORIES — used for DO target calculation
+//  Each entry: { name, target }  (target = DOs per agent per month)
+// ═══════════════════════════════════════════════════════
+const DEFAULT_AGENT_CATS = [
+  { name: 'Category A', target: 30 },
+  { name: 'Category B', target: 20 },
+];
+
+// ═══════════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════════
 const state = {
   tlName: '',
-  apiUrl: localStorage.getItem('tleval_api_url') || '',
   period: { from: '', to: '' },
   activeMonth: 0,
-  months: [
-    { name:'Month 1', do_rate:0, coaching_rate:0, reports:0, subtasks:0, followups:0, escalations:0, punctuality:100, absent_vs_avg:0, complaints:0, transfers:0 },
-    { name:'Month 2', do_rate:0, coaching_rate:0, reports:0, subtasks:0, followups:0, escalations:0, punctuality:100, absent_vs_avg:0, complaints:0, transfers:0 },
-    { name:'Month 3', do_rate:0, coaching_rate:0, reports:0, subtasks:0, followups:0, escalations:0, punctuality:100, absent_vs_avg:0, complaints:0, transfers:0 }
-  ]
+  months: [0,1,2].map(i => ({
+    name: 'Month ' + (i+1),
+    // DO raw numbers
+    do_actual: 0,        // total DOs achieved by team
+    do_target: 0,        // total target (auto-calculated from agent categories)
+    do_rate: 0,          // calculated: do_actual / do_target * 100
+    // Agent category rows for DO target
+    agentCats: JSON.parse(JSON.stringify(DEFAULT_AGENT_CATS)),
+    // Coaching raw numbers
+    coaching_done: 0,    // rows where TL Done=Yes AND Tony OK=Yes
+    coaching_total: 0,   // total coaching rows for this TL
+    coaching_rate: 0,    // calculated
+    // Business Rules — raw counts (direct)
+    reports: 0,
+    subtasks: 0,
+    followups: 0,
+    // Leadership — raw numbers
+    escalations: 0,
+    punct_on_time: 0,    // days arrived on time
+    punct_total: 0,      // total working days
+    punctuality: 100,    // calculated
+    // Motivation — raw numbers
+    absent_team_days: 0, // team absent days
+    absent_team_wd: 0,   // team working days
+    absent_company_rate: 0, // company average %
+    absent_vs_avg: 0,    // calculated difference
+    complaints: 0,
+    transfers: 0,
+  }))
 };
 
 // ═══════════════════════════════════════════════════════
@@ -677,30 +741,51 @@ function applyPeriod() {
 }
 
 // ═══════════════════════════════════════════════════════
+//  DERIVED CALCULATIONS — recompute rates from raw numbers
+// ═══════════════════════════════════════════════════════
+function recomputeRates(m) {
+  // DO Rate
+  const doTarget = m.agentCats.reduce((s, c) => s + (c.count || 0) * (c.target || 0), 0);
+  m.do_target = doTarget;
+  m.do_rate = doTarget > 0 ? (m.do_actual / doTarget) * 100 : 0;
+
+  // Coaching Rate
+  m.coaching_rate = m.coaching_total > 0 ? (m.coaching_done / m.coaching_total) * 100 : 0;
+
+  // Punctuality Rate
+  m.punctuality = m.punct_total > 0 ? (m.punct_on_time / m.punct_total) * 100 : 100;
+
+  // Absent vs Avg
+  const teamRate = m.absent_team_wd > 0 ? (m.absent_team_days / m.absent_team_wd) * 100 : 0;
+  m.absent_vs_avg = teamRate - m.absent_company_rate;
+}
+
+// ═══════════════════════════════════════════════════════
 //  SCORING
 // ═══════════════════════════════════════════════════════
-function scoreDO(r)       { return r>=100?4:r>=90?3:r>=80?2:0; }
-function scoreCoaching(r) { return r>=90?4:r>=75?3:r>=60?2:0; }
-function scoreReports(n)  { return n===0?4:n===1?3:n===2?2:0; }
-function scoreSubtasks(n) { return n===0?4:n===1?3:n===2?2:0; }
-function scoreFollowups(n){ return n===0?4:n===1?3:n===2?2:0; }
+function scoreDO(r)         { return r>=100?4:r>=90?3:r>=80?2:0; }
+function scoreCoaching(r)   { return r>=90?4:r>=75?3:r>=60?2:0; }
+function scoreReports(n)    { return n===0?4:n===1?3:n===2?2:0; }
+function scoreSubtasks(n)   { return n===0?4:n===1?3:n===2?2:0; }
+function scoreFollowups(n)  { return n===0?4:n===1?3:n===2?2:0; }
 function scoreEscalations(n){ return n<=2?4:n<=4?3:n<=6?2:0; }
 function scorePunctuality(r){ return r>=100?4:r>=96?3:r>=90?2:0; }
-function scoreAbsent(d)   { return d<0?4:d===0?3:d<=3?2:0; }
-function scoreComplaints(n){ return n===0?4:n<=2?3:n<=4?2:0; }
-function scoreTransfers(n){ return n===0?4:n===1?3:0; }
+function scoreAbsent(d)     { return d<0?4:d===0?3:d<=3?2:0; }
+function scoreComplaints(n) { return n===0?4:n<=2?3:n<=4?2:0; }
+function scoreTransfers(n)  { return n===0?4:n===1?3:0; }
 
 function calcMonthScore(m) {
-  const dp  = scoreDO(m.do_rate);
-  const cp  = scoreCoaching(m.coaching_rate);
-  const rp  = scoreReports(m.reports);
-  const sp  = scoreSubtasks(m.subtasks);
-  const fp  = scoreFollowups(m.followups);
-  const ep  = scoreEscalations(m.escalations);
-  const pp  = scorePunctuality(m.punctuality);
-  const ap  = scoreAbsent(m.absent_vs_avg);
-  const comp= scoreComplaints(m.complaints);
-  const tp  = scoreTransfers(m.transfers);
+  recomputeRates(m);
+  const dp   = scoreDO(m.do_rate);
+  const cp   = scoreCoaching(m.coaching_rate);
+  const rp   = scoreReports(m.reports);
+  const sp   = scoreSubtasks(m.subtasks);
+  const fp   = scoreFollowups(m.followups);
+  const ep   = scoreEscalations(m.escalations);
+  const pp   = scorePunctuality(m.punctuality);
+  const ap   = scoreAbsent(m.absent_vs_avg);
+  const comp = scoreComplaints(m.complaints);
+  const tp   = scoreTransfers(m.transfers);
 
   const do_s  = (dp / 4) * 80;
   const c_s   = (cp / 4) * 7;
@@ -725,125 +810,293 @@ function ptBg(p)     { return p===4?'var(--green-light)':p===3?'var(--yellow-lig
 function ptBorder(p) { return p===4?'var(--green-soft)':p===3?'var(--yellow-soft)':p===2?'var(--orange-soft)':'var(--red-soft)'; }
 
 // ═══════════════════════════════════════════════════════
-//  BUILD CALCULATOR INPUTS (once per month switch)
+//  FIELD CHANGE HANDLER
 // ═══════════════════════════════════════════════════════
-const INPUT_DEFS = [
-  // [label, field, unit, hint, scoreFn, isPercent, isFloat]
-  ['DO Achievement Rate', 'do_rate', '%', 'From Dialer + EyeBeam export', scoreDO, true, false],
-  ['Coaching Completion Rate', 'coaching_rate', '%', '(TL Done=Yes AND Tony OK=Yes) ÷ Total sessions', scoreCoaching, true, false],
-  ['Reports submitted late', 'reports', '', 'Count from task tracker', scoreReports, false, false],
-  ['Sub-tasks completed late', 'subtasks', '', 'Count from task tracker', scoreSubtasks, false, false],
-  ['Same-task follow-ups needed', 'followups', '', 'Count from your manager log', scoreFollowups, false, false],
-  ['Escalations that reached you', 'escalations', '', 'Count from manager log', scoreEscalations, false, false],
-  ['TL Punctuality Rate', 'punctuality', '%', 'From attendance records', scorePunctuality, true, false],
-  ['Team absenteeism vs avg (Δ%)', 'absent_vs_avg', '%', 'Negative = below avg (good). Enter e.g. -2 or 3', scoreAbsent, false, true],
-  ['Complaints from TL (logged)', 'complaints', '', 'Count from manager log / HR', scoreComplaints, false, false],
-  ['Transfer requests from agents', 'transfers', '', 'Count from manager log / HR', scoreTransfers, false, false],
-];
+function onRawInput(el) {
+  const field = el.dataset.field;
+  const midx  = parseInt(el.dataset.midx);
+  const val   = el.value === '' ? 0 : parseFloat(el.value) || 0;
+  state.months[midx][field] = val;
+  recomputeRates(state.months[midx]);
+  refreshDerivedDisplays(midx);
+  updateScorePanel();
+}
 
-const SECTION_MAP = {
-  do_rate:       { title:'DO Achievement',        color:'var(--blue)',   weight:'×80', bg:'var(--blue-light)',   c:'var(--blue)'   },
-  coaching_rate: { title:'Coaching Effectiveness',color:'var(--green)',  weight:'×7',  bg:'var(--green-light)',  c:'var(--green)'  },
-  reports:       { title:'Business Rules (avg 3)',  color:'var(--yellow)',weight:'×5',  bg:'var(--yellow-light)', c:'var(--yellow)' },
-  escalations:   { title:'Leadership (avg 2)',      color:'var(--orange)',weight:'×4',  bg:'var(--orange-light)', c:'var(--orange)' },
-  absent_vs_avg: { title:'Motivation (avg 3)',       color:'var(--red)',   weight:'×4',  bg:'var(--red-light)',    c:'var(--red)'    },
-};
-
-const SECTION_FIELDS = {
-  do_rate:       ['do_rate'],
-  coaching_rate: ['coaching_rate'],
-  reports:       ['reports','subtasks','followups'],
-  escalations:   ['escalations','punctuality'],
-  absent_vs_avg: ['absent_vs_avg','complaints','transfers'],
-};
-
-function buildCalcInputs(idx) {
-  const m = state.months[idx];
-  let html = `<div class="month-name-row"><input type="text" class="month-name-input" value="${m.name}" placeholder="e.g. January 2025" oninput="state.months[${idx}].name=this.value;document.getElementById('sp-month-label').textContent=this.value;"></div>`;
-
-  Object.entries(SECTION_FIELDS).forEach(([key, fields]) => {
-    const sec = SECTION_MAP[key];
-    html += `<div class="calc-sec">
-      <div class="csh">
-        <div class="csh-dot" style="background:${sec.color};"></div>
-        <div class="csh-title">${sec.title}</div>
-        <div class="csh-weight" style="background:${sec.bg};color:${sec.c};">Weight ${sec.weight}</div>
-      </div>`;
-    fields.forEach(field => {
-      const def = INPUT_DEFS.find(d => d[1] === field);
-      if (!def) return;
-      const [label,,unit,hint,scoreFn,,isFloat] = def;
-      const val = m[field];
-      const pts = scoreFn(val);
-      html += `<div class="cr-row">
-        <div class="cr-lbl">${label}<br><span style="font-size:10.5px;color:var(--muted2);">${hint}</span></div>
-        <input class="cr-num" type="number" ${isFloat?'step="0.1"':''} value="${val}"
-               data-field="${field}" data-midx="${idx}"
-               oninput="onFieldInput(this)">
-        ${unit ? `<span style="font-size:11px;color:var(--muted2);">${unit}</span>` : ''}
-        <div class="cr-pts" id="pts-${field}" style="background:${ptBg(pts)};border-color:${ptBorder(pts)};color:${ptColor(pts)};">${pts}/4</div>
-      </div>`;
-    });
-    html += `</div>`;
-  });
-
-  document.getElementById('calc-inputs').innerHTML = html;
-  document.getElementById('sp-month-label').textContent = m.name;
+function refreshDerivedDisplays(midx) {
+  const m = state.months[midx];
+  // DO Rate display
+  const doRateEl = document.getElementById('do-rate-display-' + midx);
+  if (doRateEl) {
+    const pts = scoreDO(m.do_rate);
+    doRateEl.innerHTML = `<span class="rib-result-lbl">DO Rate: <strong>${m.do_rate.toFixed(1)}%</strong> &nbsp; Target: <strong>${m.do_target} DOs</strong></span>
+      <span class="cr-pts" style="background:${ptBg(pts)};border-color:${ptBorder(pts)};color:${ptColor(pts)};">${pts}/4</span>`;
+    const badge = document.getElementById('pts-do_rate');
+    if (badge) { badge.textContent=pts+'/4'; badge.style.background=ptBg(pts); badge.style.borderColor=ptBorder(pts); badge.style.color=ptColor(pts); }
+  }
+  // Coaching Rate display
+  const cRateEl = document.getElementById('coaching-rate-display-' + midx);
+  if (cRateEl) {
+    const pts = scoreCoaching(m.coaching_rate);
+    cRateEl.innerHTML = `<span class="rib-result-lbl">Coaching Rate: <strong>${m.coaching_rate.toFixed(1)}%</strong></span>
+      <span class="cr-pts" style="background:${ptBg(pts)};border-color:${ptBorder(pts)};color:${ptColor(pts)};">${pts}/4</span>`;
+    const badge = document.getElementById('pts-coaching_rate');
+    if (badge) { badge.textContent=pts+'/4'; badge.style.background=ptBg(pts); badge.style.borderColor=ptBorder(pts); badge.style.color=ptColor(pts); }
+  }
+  // Punctuality Rate display
+  const pRateEl = document.getElementById('punct-rate-display-' + midx);
+  if (pRateEl) {
+    const pts = scorePunctuality(m.punctuality);
+    pRateEl.innerHTML = `<span class="rib-result-lbl">Punctuality Rate: <strong>${m.punctuality.toFixed(1)}%</strong></span>
+      <span class="cr-pts" style="background:${ptBg(pts)};border-color:${ptBorder(pts)};color:${ptColor(pts)};">${pts}/4</span>`;
+  }
+  // Absent vs Avg display
+  const aRateEl = document.getElementById('absent-display-' + midx);
+  if (aRateEl) {
+    const pts = scoreAbsent(m.absent_vs_avg);
+    const sign = m.absent_vs_avg > 0 ? '+' : '';
+    aRateEl.innerHTML = `<span class="rib-result-lbl">Team Rate: <strong>${((m.absent_team_wd>0?m.absent_team_days/m.absent_team_wd*100:0)).toFixed(1)}%</strong> &nbsp; Δ vs avg: <strong>${sign}${m.absent_vs_avg.toFixed(1)}%</strong></span>
+      <span class="cr-pts" style="background:${ptBg(pts)};border-color:${ptBorder(pts)};color:${ptColor(pts)};">${pts}/4</span>`;
+  }
 }
 
 // ═══════════════════════════════════════════════════════
-//  LIVE INPUT HANDLER — only patches badge + score panel
+//  AGENT CATEGORY FUNCTIONS
 // ═══════════════════════════════════════════════════════
-function onFieldInput(el) {
-  const field = el.dataset.field;
+function addAgentCat(midx) {
+  state.months[midx].agentCats.push({ name: 'New Category', count: 0, target: 0 });
+  buildCalcInputs(midx);
+  updateScorePanel();
+}
+
+function removeAgentCat(midx, cidx) {
+  state.months[midx].agentCats.splice(cidx, 1);
+  buildCalcInputs(midx);
+  updateScorePanel();
+}
+
+function onAgentCatInput(el) {
   const midx  = parseInt(el.dataset.midx);
-  const raw   = el.value;
-  const val   = raw === '' || raw === '-' ? 0 : parseFloat(raw) || 0;
-  state.months[midx][field] = val;
-
-  // Update just this field's pts badge
-  const def    = INPUT_DEFS.find(d => d[1] === field);
-  const scoreFn= def[4];
-  const pts    = scoreFn(val);
-  const badge  = document.getElementById('pts-' + field);
-  if (badge) {
-    badge.textContent   = pts + '/4';
-    badge.style.background   = ptBg(pts);
-    badge.style.borderColor  = ptBorder(pts);
-    badge.style.color        = ptColor(pts);
+  const cidx  = parseInt(el.dataset.cidx);
+  const field = el.dataset.field;
+  const m     = state.months[midx];
+  if (field === 'name') {
+    m.agentCats[cidx].name = el.value;
+  } else {
+    m.agentCats[cidx][field] = parseFloat(el.value) || 0;
   }
-
+  recomputeRates(m);
+  refreshDerivedDisplays(midx);
   updateScorePanel();
 }
 
 // ═══════════════════════════════════════════════════════
-//  UPDATE SCORE PANEL (DOM patch only, no rebuild)
+//  BUILD CALCULATOR INPUTS (once per month switch)
+// ═══════════════════════════════════════════════════════
+function buildCalcInputs(idx) {
+  const m = state.months[idx];
+  recomputeRates(m);
+
+  let html = `<div class="month-name-row">
+    <input type="text" class="month-name-input" value="${escH(m.name)}" placeholder="e.g. January 2025"
+           oninput="state.months[${idx}].name=this.value;document.getElementById('sp-month-label').textContent=this.value;">
+  </div>`;
+
+  // ── DO ACHIEVEMENT ─────────────────────────────────
+  html += `<div class="calc-sec">
+    <div class="csh">
+      <div class="csh-dot" style="background:var(--blue);"></div>
+      <div class="csh-title">DO Achievement</div>
+      <div class="csh-weight" style="background:var(--blue-light);color:var(--blue);">Weight ×80</div>
+    </div>
+    <div class="do-agents-block">
+      <div class="dab-title">
+        <span>Agent Categories & Monthly Targets</span>
+        <span style="font-size:10px;color:var(--muted);font-weight:400;font-family:var(--ff);">Target = count × per-agent target</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 70px 80px 24px;gap:8px;margin-bottom:7px;">
+        <div class="agent-cat-hdr">Category Name</div>
+        <div class="agent-cat-hdr"># Agents</div>
+        <div class="agent-cat-hdr">Target / agent</div>
+        <div></div>
+      </div>`;
+
+  m.agentCats.forEach((cat, cidx) => {
+    html += `<div style="display:grid;grid-template-columns:1fr 70px 80px 24px;gap:8px;margin-bottom:6px;align-items:center;">
+      <input class="agent-cat-num" type="text" value="${escH(cat.name)}" placeholder="Category name"
+             data-midx="${idx}" data-cidx="${cidx}" data-field="name" oninput="onAgentCatInput(this)">
+      <input class="agent-cat-num" type="number" min="0" value="${cat.count||0}"
+             data-midx="${idx}" data-cidx="${cidx}" data-field="count" oninput="onAgentCatInput(this)">
+      <input class="agent-cat-num" type="number" min="0" value="${cat.target||0}"
+             data-midx="${idx}" data-cidx="${cidx}" data-field="target" oninput="onAgentCatInput(this)">
+      <button class="del-agent-btn" onclick="removeAgentCat(${idx},${cidx})" title="Remove">×</button>
+    </div>`;
+  });
+
+  const totalTarget = m.do_target;
+  html += `<button class="add-agent-btn" onclick="addAgentCat(${idx})">+ Add category</button>
+    <div class="do-totals-row">
+      <div class="do-total-pill"><span class="dtp-lbl">Total Target</span><span class="dtp-val" style="color:var(--blue);">${totalTarget} DOs</span></div>
+    </div>
+    </div>
+    <div class="raw-inputs-block">
+      <div class="rib-title">Actual Results</div>
+      <div class="rib-row">
+        <div class="rib-lbl">Team DOs Actually Achieved (from Dialer + EyeBeam)</div>
+        <input class="rib-num" type="number" min="0" value="${m.do_actual}"
+               data-field="do_actual" data-midx="${idx}" oninput="onRawInput(this)">
+      </div>
+      <div class="rib-result" id="do-rate-display-${idx}"></div>
+    </div>
+  </div>`;
+
+  // ── COACHING EFFECTIVENESS ─────────────────────────
+  const cPts = scoreCoaching(m.coaching_rate);
+  html += `<div class="calc-sec">
+    <div class="csh">
+      <div class="csh-dot" style="background:var(--green);"></div>
+      <div class="csh-title">Coaching Effectiveness</div>
+      <div class="csh-weight" style="background:var(--green-light);color:var(--green);">Weight ×7</div>
+    </div>
+    <div class="raw-inputs-block">
+      <div class="rib-title">From Coaching Sheet — count rows for this TL</div>
+      <div class="rib-row">
+        <div class="rib-lbl">Total coaching rows for this TL (this month)</div>
+        <input class="rib-num" type="number" min="0" value="${m.coaching_total}"
+               data-field="coaching_total" data-midx="${idx}" oninput="onRawInput(this)">
+      </div>
+      <div class="rib-row">
+        <div class="rib-lbl">Rows where TL Done = Yes AND Tony OK = Yes</div>
+        <input class="rib-num" type="number" min="0" value="${m.coaching_done}"
+               data-field="coaching_done" data-midx="${idx}" oninput="onRawInput(this)">
+      </div>
+      <div class="rib-result" id="coaching-rate-display-${idx}"></div>
+    </div>
+  </div>`;
+
+  // ── BUSINESS RULES ─────────────────────────────────
+  const rPts = scoreReports(m.reports);
+  const sPts = scoreSubtasks(m.subtasks);
+  const fPts = scoreFollowups(m.followups);
+  html += `<div class="calc-sec">
+    <div class="csh">
+      <div class="csh-dot" style="background:var(--yellow);"></div>
+      <div class="csh-title">Business Rules (avg of 3 metrics)</div>
+      <div class="csh-weight" style="background:var(--yellow-light);color:var(--yellow);">Weight ×5</div>
+    </div>
+    ${makeCountRow('Reports submitted late', 'reports', idx, m.reports, rPts, 'Count from task tracker')}
+    ${makeCountRow('Sub-tasks completed late', 'subtasks', idx, m.subtasks, sPts, 'Count from task tracker')}
+    ${makeCountRow('Same-task follow-ups needed from manager', 'followups', idx, m.followups, fPts, 'Count from manager log')}
+  </div>`;
+
+  // ── LEADERSHIP ─────────────────────────────────────
+  const ePts = scoreEscalations(m.escalations);
+  html += `<div class="calc-sec">
+    <div class="csh">
+      <div class="csh-dot" style="background:var(--orange);"></div>
+      <div class="csh-title">Leadership Skills (avg of 2 metrics)</div>
+      <div class="csh-weight" style="background:var(--orange-light);color:var(--orange);">Weight ×4</div>
+    </div>
+    ${makeCountRow('Escalations that reached manager', 'escalations', idx, m.escalations, ePts, 'Count from manager log')}
+    <div class="raw-inputs-block" style="margin-top:10px;">
+      <div class="rib-title">Punctuality — from attendance records</div>
+      <div class="rib-row">
+        <div class="rib-lbl">Days TL arrived on time</div>
+        <input class="rib-num" type="number" min="0" value="${m.punct_on_time}"
+               data-field="punct_on_time" data-midx="${idx}" oninput="onRawInput(this)">
+      </div>
+      <div class="rib-row">
+        <div class="rib-lbl">Total working days in this month</div>
+        <input class="rib-num" type="number" min="1" value="${m.punct_total||22}"
+               data-field="punct_total" data-midx="${idx}" oninput="onRawInput(this)">
+      </div>
+      <div class="rib-result" id="punct-rate-display-${idx}"></div>
+    </div>
+  </div>`;
+
+  // ── MOTIVATION ─────────────────────────────────────
+  const compPts = scoreComplaints(m.complaints);
+  const tPts    = scoreTransfers(m.transfers);
+  html += `<div class="calc-sec">
+    <div class="csh">
+      <div class="csh-dot" style="background:var(--red);"></div>
+      <div class="csh-title">Motivation & Attitude (avg of 3 metrics)</div>
+      <div class="csh-weight" style="background:var(--red-light);color:var(--red);">Weight ×4</div>
+    </div>
+    <div class="raw-inputs-block">
+      <div class="rib-title">Team Absenteeism — from attendance records</div>
+      <div class="rib-row">
+        <div class="rib-lbl">Team absent days this month</div>
+        <input class="rib-num" type="number" min="0" value="${m.absent_team_days}"
+               data-field="absent_team_days" data-midx="${idx}" oninput="onRawInput(this)">
+      </div>
+      <div class="rib-row">
+        <div class="rib-lbl">Team total working days this month</div>
+        <input class="rib-num" type="number" min="1" value="${m.absent_team_wd||220}"
+               data-field="absent_team_wd" data-midx="${idx}" oninput="onRawInput(this)">
+      </div>
+      <div class="rib-row">
+        <div class="rib-lbl">Company absenteeism average this month (%)</div>
+        <input class="rib-num" type="number" min="0" step="0.1" value="${m.absent_company_rate}"
+               data-field="absent_company_rate" data-midx="${idx}" oninput="onRawInput(this)">
+      </div>
+      <div class="rib-result" id="absent-display-${idx}"></div>
+    </div>
+    ${makeCountRow('Complaints logged against TL', 'complaints', idx, m.complaints, compPts, 'Count from manager log / HR')}
+    ${makeCountRow('Transfer requests from agents', 'transfers', idx, m.transfers, tPts, 'Count from manager log / HR')}
+  </div>`;
+
+  document.getElementById('calc-inputs').innerHTML = html;
+  document.getElementById('sp-month-label').textContent = m.name;
+
+  // Pre-fill all derived displays
+  refreshDerivedDisplays(idx);
+}
+
+function makeCountRow(label, field, midx, val, pts, hint) {
+  return `<div class="cr-row">
+    <div class="cr-lbl">${label}<br><span style="font-size:10.5px;color:var(--muted2);">${hint}</span></div>
+    <input class="cr-num" type="number" min="0" value="${val}"
+           data-field="${field}" data-midx="${midx}" oninput="onCountInput(this)">
+    <div class="cr-pts" id="pts-${field}" style="background:${ptBg(pts)};border-color:${ptBorder(pts)};color:${ptColor(pts)};">${pts}/4</div>
+  </div>`;
+}
+
+function onCountInput(el) {
+  const field = el.dataset.field;
+  const midx  = parseInt(el.dataset.midx);
+  const val   = parseInt(el.value) || 0;
+  state.months[midx][field] = val;
+  const scoreFnMap = { reports:scoreReports, subtasks:scoreSubtasks, followups:scoreFollowups,
+                       escalations:scoreEscalations, complaints:scoreComplaints, transfers:scoreTransfers };
+  const fn  = scoreFnMap[field];
+  const pts = fn ? fn(val) : 0;
+  const badge = document.getElementById('pts-' + field);
+  if (badge) { badge.textContent=pts+'/4'; badge.style.background=ptBg(pts); badge.style.borderColor=ptBorder(pts); badge.style.color=ptColor(pts); }
+  updateScorePanel();
+}
+
+function escH(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ═══════════════════════════════════════════════════════
+//  UPDATE SCORE PANEL (DOM patch only)
 // ═══════════════════════════════════════════════════════
 function updateScorePanel() {
   const idx    = state.activeMonth;
   const m      = state.months[idx];
   const s      = calcMonthScore(m);
-  const t      = Math.round(s.total * 10) / 10;
   const band   = getBandInfo(s.total);
   const circ   = 314.2;
   const offset = circ - (s.total / 100) * circ;
 
-  // ring
   const ringEl = document.getElementById('ring-fill-el');
-  if (ringEl) {
-    ringEl.setAttribute('stroke-dashoffset', offset.toFixed(1));
-    ringEl.setAttribute('stroke', band.color);
-  }
+  if (ringEl) { ringEl.setAttribute('stroke-dashoffset', offset.toFixed(1)); ringEl.setAttribute('stroke', band.color); }
 
-  // number
   const numEl = document.getElementById('sp-num');
   if (numEl) { numEl.textContent = Math.round(s.total); numEl.style.color = band.color; }
 
-  // band label
   const bandEl = document.getElementById('sp-band');
   if (bandEl) { bandEl.textContent = band.label; bandEl.style.color = band.color; }
 
-  // breakdown bars
   const breakdownEl = document.getElementById('sp-breakdown');
   if (breakdownEl) {
     breakdownEl.innerHTML = [
@@ -860,18 +1113,12 @@ function updateScorePanel() {
       </div>`).join('');
   }
 
-  // action text
   const actEl = document.getElementById('sp-action');
   if (actEl) actEl.innerHTML = `<strong>${band.label}:</strong> ${band.action}`;
 
-  // tl name
   const tlEl = document.getElementById('sp-tl-name');
-  if (tlEl) {
-    if (state.tlName) { tlEl.textContent = state.tlName; tlEl.style.display = 'block'; }
-    else tlEl.style.display = 'none';
-  }
+  if (tlEl) { if (state.tlName) { tlEl.textContent = state.tlName; tlEl.style.display='block'; } else tlEl.style.display='none'; }
 
-  // topbar + sidebar
   document.getElementById('tb-score-pill').textContent = `${m.name}: ${Math.round(s.total)} / 100`;
   document.getElementById('tb-score-pill').style.color = band.color;
   document.getElementById('sb-score').textContent = Math.round(s.total) + ' pts';
@@ -900,7 +1147,7 @@ function buildQuarterly() {
     const mb = getBandInfo(s.total);
     const m  = state.months[i];
     html += `<div class="qtr-card">
-      <div class="qtr-title">${m.name} <span>${Math.round(s.total)} pts</span></div>
+      <div class="qtr-title">${escH(m.name)} <span>${Math.round(s.total)} pts</span></div>
       <div class="qtr-metric"><span class="qtr-metric-lbl">DO Achievement</span><span class="qtr-metric-val" style="color:var(--blue);">${s.do_s.toFixed(1)}/80</span></div>
       <div class="qtr-metric"><span class="qtr-metric-lbl">Coaching</span><span class="qtr-metric-val" style="color:var(--green);">${s.c_s.toFixed(1)}/7</span></div>
       <div class="qtr-metric"><span class="qtr-metric-lbl">Business Rules</span><span class="qtr-metric-val" style="color:var(--yellow);">${s.b_s.toFixed(1)}/5</span></div>
@@ -923,10 +1170,6 @@ function buildQuarterly() {
 // ═══════════════════════════════════════════════════════
 //  GOOGLE SHEETS INTEGRATION
 // ═══════════════════════════════════════════════════════
-function saveApiUrl() {
-  localStorage.setItem('tleval_api_url', state.apiUrl);
-}
-
 function setStatus(elId, msg, type) {
   const el = document.getElementById(elId);
   if (!el) return;
@@ -936,11 +1179,11 @@ function setStatus(elId, msg, type) {
 }
 
 async function sheetsPost(action, data) {
-  const url = state.apiUrl.trim();
-  if (!url) throw new Error('No Apps Script URL set. Paste it in the green bar above.');
+  const url = API_URL.trim();
+  if (!url || url.includes('YOUR_SCRIPT_ID_HERE')) throw new Error('API URL not configured. Edit the API_URL constant in the script.');
   const resp = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'text/plain' }, // GAS requires text/plain for CORS
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify({ action, data })
   });
   if (!resp.ok) throw new Error('HTTP ' + resp.status);
@@ -961,10 +1204,10 @@ async function saveToSheets() {
 
   try {
     const result = await sheetsPost('save_month', {
-      tlName:      state.tlName,
-      periodFrom:  state.period.from,
-      periodTo:    state.period.to,
-      monthLabel:  m.name,
+      tlName:         state.tlName,
+      periodFrom:     state.period.from,
+      periodTo:       state.period.to,
+      monthLabel:     m.name,
       do_rate:        m.do_rate,
       coaching_rate:  m.coaching_rate,
       reports:        m.reports,
@@ -975,26 +1218,15 @@ async function saveToSheets() {
       absent_vs_avg:  m.absent_vs_avg,
       complaints:     m.complaints,
       transfers:      m.transfers,
-      scores: {
-        do_s:   s.do_s,
-        c_s:    s.c_s,
-        b_s:    s.b_s,
-        l_s:    s.l_s,
-        mot_s:  s.mot_s,
-        total:  s.total,
-        band:   band.label
-      }
+      scores: { do_s: s.do_s, c_s: s.c_s, b_s: s.b_s, l_s: s.l_s, mot_s: s.mot_s, total: s.total, band: band.label }
     });
-    if (result.status === 'ok') {
-      setStatus('save-status', '✓ Saved to Sheets', '');
-    } else {
-      throw new Error(result.message);
-    }
+    if (result.status === 'ok') setStatus('save-status', '✓ Saved to Sheets', '');
+    else throw new Error(result.message);
   } catch (err) {
     setStatus('save-status', '✗ ' + err.message, 'error');
   } finally {
     btn.disabled = false;
-    setTimeout(() => setStatus('save-status', '', ''), 5000);
+    setTimeout(() => setStatus('save-status', '', ''), 6000);
   }
 }
 
@@ -1003,30 +1235,20 @@ async function saveQuarterlyToSheets() {
   const scores = state.months.map(m => calcMonthScore(m));
   const qAvg   = scores.reduce((a, s) => a + s.total, 0) / 3;
   const band   = getBandInfo(qAvg);
-
   const statusEl = document.getElementById('qtr-save-status');
-  statusEl.textContent = '⟳ Saving…';
-  statusEl.style.color = 'var(--blue)';
-
+  statusEl.textContent = '⟳ Saving…'; statusEl.style.color = 'var(--blue)';
   try {
     const result = await sheetsPost('save_quarterly', {
-      tlName:       state.tlName,
-      periodFrom:   state.period.from,
-      periodTo:     state.period.to,
-      months:       state.months.map((m, i) => ({ label: m.name, score: scores[i].total })),
-      quarterlyAvg: qAvg,
-      band:         band.label,
-      action:       band.action
+      tlName: state.tlName, periodFrom: state.period.from, periodTo: state.period.to,
+      months: state.months.map((m, i) => ({ label: m.name, score: scores[i].total })),
+      quarterlyAvg: qAvg, band: band.label, action: band.action
     });
-    if (result.status === 'ok') {
-      statusEl.textContent = '✓ Quarterly saved';
-      statusEl.style.color = 'var(--green)';
-    } else throw new Error(result.message);
+    if (result.status === 'ok') { statusEl.textContent = '✓ Quarterly saved'; statusEl.style.color = 'var(--green)'; }
+    else throw new Error(result.message);
   } catch (err) {
-    statusEl.textContent = '✗ ' + err.message;
-    statusEl.style.color = 'var(--red)';
+    statusEl.textContent = '✗ ' + err.message; statusEl.style.color = 'var(--red)';
   } finally {
-    setTimeout(() => { statusEl.textContent = ''; }, 5000);
+    setTimeout(() => { statusEl.textContent = ''; }, 6000);
   }
 }
 
@@ -1039,7 +1261,6 @@ function buildPrintPage() {
   const band   = getBandInfo(qAvg);
   const activeS= scores[state.activeMonth];
   const activeM= state.months[state.activeMonth];
-  const activeBand = getBandInfo(activeS.total);
   const tlName = state.tlName || '___________________';
   const periodTxt = state.period.from ? `${state.period.from} → ${state.period.to}` : 'Period not set';
   const circ = 125.6;
@@ -1047,68 +1268,44 @@ function buildPrintPage() {
   const ptRow = (lbl, pts) => `<div class="pp-metric"><span class="pp-metric-lbl">${lbl}</span><span class="pp-metric-pts" style="color:${ptColor(pts)};">${pts}/4</span></div>`;
 
   let html = `<div class="pp-header">
-    <div class="pp-logo-area">
-      <div class="pp-org">ICO · Team Leader Evaluation</div>
-      <div class="pp-title">Performance Evaluation Report</div>
-      <div class="pp-sub">All metrics from measurable, verifiable data sources</div>
-    </div>
-    <div class="pp-meta">
-      <div class="pp-tl-label">Team Leader</div>
-      <div class="pp-tl-name">${tlName}</div>
-      <div class="pp-period">${periodTxt}</div>
-    </div>
+    <div><div class="pp-org">ICO · Team Leader Evaluation</div><div class="pp-title">Performance Evaluation Report</div><div class="pp-sub">All metrics from measurable, verifiable data sources</div></div>
+    <div class="pp-meta"><div class="pp-tl-label">Team Leader</div><div class="pp-tl-name">${escH(tlName)}</div><div class="pp-period">${periodTxt}</div></div>
   </div>
   <div class="pp-score-banner">
-    <div class="pp-ring-mini">
-      <svg viewBox="0 0 52 52" style="transform:rotate(-90deg);">
-        <circle cx="26" cy="26" r="20" fill="none" stroke="#dbeafe" stroke-width="5"/>
-        <circle cx="26" cy="26" r="20" fill="none" stroke="${band.color}" stroke-width="5"
-          stroke-dasharray="${circ}" stroke-dashoffset="${(circ-(qAvg/100)*circ).toFixed(1)}" stroke-linecap="round"/>
-      </svg>
-    </div>
-    <div class="pp-score-info">
-      <div style="display:flex;align-items:baseline;gap:8px;">
-        <div class="pp-score-big" style="color:${band.color};">${qAvg.toFixed(1)}</div>
-        <div style="font-size:11px;color:#6b7280;">/ 100 · 3-Month Avg</div>
-      </div>
-      <div class="pp-score-band" style="color:${band.color};">${band.label}</div>
-      <div class="pp-score-action">${band.action}</div>
-      <div class="pp-breakdown-inline">
-        ${scores.map((s,i)=>`<span class="pp-bd-item" style="background:${getBandInfo(s.total).color}22;color:${getBandInfo(s.total).color};">${state.months[i].name}: ${Math.round(s.total)}pts</span>`).join('')}
-      </div>
-    </div>
+    <div><svg viewBox="0 0 52 52" style="transform:rotate(-90deg);width:52px;height:52px;"><circle cx="26" cy="26" r="20" fill="none" stroke="#dbeafe" stroke-width="5"/><circle cx="26" cy="26" r="20" fill="none" stroke="${band.color}" stroke-width="5" stroke-dasharray="${circ}" stroke-dashoffset="${(circ-(qAvg/100)*circ).toFixed(1)}" stroke-linecap="round"/></svg></div>
+    <div><div style="display:flex;align-items:baseline;gap:8px;"><div class="pp-score-big" style="color:${band.color};">${qAvg.toFixed(1)}</div><div style="font-size:11px;color:#6b7280;">/ 100 · 3-Month Avg</div></div><div class="pp-score-band" style="color:${band.color};">${band.label}</div><div class="pp-score-action">${band.action}</div>
+    <div class="pp-breakdown-inline">${scores.map((s,i)=>`<span class="pp-bd-item" style="background:${getBandInfo(s.total).color}22;color:${getBandInfo(s.total).color};">${escH(state.months[i].name)}: ${Math.round(s.total)}pts</span>`).join('')}</div></div>
   </div>
-  <div class="pp-qtr">
-    <div class="pp-qtr-title"><span>Monthly Breakdown</span><span style="font-family:'JetBrains Mono',monospace;color:${band.color};">Avg: ${qAvg.toFixed(1)} / 100</span></div>
+  <div class="pp-qtr"><div class="pp-qtr-title"><span>Monthly Breakdown</span><span style="font-family:'JetBrains Mono',monospace;color:${band.color};">Avg: ${qAvg.toFixed(1)} / 100</span></div>
     <div class="pp-qtr-grid">
-      ${scores.map((s,i)=>{const mb=getBandInfo(s.total);return`<div class="pp-qtr-col">
-        <div class="pp-qtr-month">${state.months[i].name}</div>
+      ${scores.map((s,i)=>{const mb=getBandInfo(s.total);return`<div class="pp-qtr-col"><div class="pp-qtr-month">${escH(state.months[i].name)}</div>
         <div class="pp-qtr-row"><span>DO</span><span style="color:var(--blue);">${s.do_s.toFixed(1)}/80</span></div>
         <div class="pp-qtr-row"><span>Coaching</span><span style="color:var(--green);">${s.c_s.toFixed(1)}/7</span></div>
         <div class="pp-qtr-row"><span>Biz Rules</span><span style="color:var(--yellow);">${s.b_s.toFixed(1)}/5</span></div>
         <div class="pp-qtr-row"><span>Leadership</span><span style="color:var(--orange);">${s.l_s.toFixed(1)}/4</span></div>
         <div class="pp-qtr-row"><span>Motivation</span><span style="color:var(--red);">${s.mot_s.toFixed(1)}/4</span></div>
-        <div class="pp-qtr-total" style="color:${mb.color};">${Math.round(s.total)} pts — ${mb.label}</div>
-      </div>`;}).join('')}
-      <div class="pp-qtr-col">
-        <div class="pp-qtr-month" style="color:${band.color};">Quarter Avg</div>
+        <div class="pp-qtr-total" style="color:${mb.color};">${Math.round(s.total)} pts — ${mb.label}</div></div>`;}).join('')}
+      <div class="pp-qtr-col"><div class="pp-qtr-month" style="color:${band.color};">Quarter Avg</div>
         <div class="pp-qtr-row"><span>DO</span><span style="color:var(--blue);">${(scores.reduce((a,s)=>a+s.do_s,0)/3).toFixed(1)}/80</span></div>
         <div class="pp-qtr-row"><span>Coaching</span><span style="color:var(--green);">${(scores.reduce((a,s)=>a+s.c_s,0)/3).toFixed(1)}/7</span></div>
         <div class="pp-qtr-row"><span>Biz Rules</span><span style="color:var(--yellow);">${(scores.reduce((a,s)=>a+s.b_s,0)/3).toFixed(1)}/5</span></div>
         <div class="pp-qtr-row"><span>Leadership</span><span style="color:var(--orange);">${(scores.reduce((a,s)=>a+s.l_s,0)/3).toFixed(1)}/4</span></div>
         <div class="pp-qtr-row"><span>Motivation</span><span style="color:var(--red);">${(scores.reduce((a,s)=>a+s.mot_s,0)/3).toFixed(1)}/4</span></div>
-        <div class="pp-qtr-total" style="color:${band.color};">${qAvg.toFixed(1)} — ${band.label}</div>
-      </div>
+        <div class="pp-qtr-total" style="color:${band.color};">${qAvg.toFixed(1)} — ${band.label}</div></div>
     </div>
   </div>
   <div class="pp-grid">
     <div class="pp-section"><div class="pp-sec-title"><div class="pp-sec-dot" style="background:var(--blue);"></div>DO Achievement<div class="pp-sec-weight" style="color:var(--blue);">80%</div></div>
-      <div class="pp-metric"><span class="pp-metric-lbl">DO Rate (${activeM.name})</span><span class="pp-metric-val" style="color:var(--blue);">${activeM.do_rate}%</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Target DOs</span><span class="pp-metric-val">${activeM.do_target}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Actual DOs</span><span class="pp-metric-val">${activeM.do_actual}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">DO Rate</span><span class="pp-metric-val" style="color:var(--blue);">${activeM.do_rate.toFixed(1)}%</span></div>
       ${ptRow('Score',activeS.dp)}
       <div class="pp-metric"><span class="pp-metric-lbl">Contribution</span><span class="pp-metric-val">${activeS.do_s.toFixed(1)} / 80 pts</span></div>
     </div>
     <div class="pp-section"><div class="pp-sec-title"><div class="pp-sec-dot" style="background:var(--green);"></div>Coaching<div class="pp-sec-weight" style="color:var(--green);">7%</div></div>
-      <div class="pp-metric"><span class="pp-metric-lbl">Completion Rate</span><span class="pp-metric-val">${activeM.coaching_rate}%</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Total sessions</span><span class="pp-metric-val">${activeM.coaching_total}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">TL Done + Tony OK</span><span class="pp-metric-val">${activeM.coaching_done}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Completion Rate</span><span class="pp-metric-val">${activeM.coaching_rate.toFixed(1)}%</span></div>
       ${ptRow('Score',activeS.cp)}
       <div class="pp-metric"><span class="pp-metric-lbl">Contribution</span><span class="pp-metric-val">${activeS.c_s.toFixed(1)} / 7 pts</span></div>
     </div>
@@ -1120,11 +1317,14 @@ function buildPrintPage() {
     </div>
     <div class="pp-section"><div class="pp-sec-title"><div class="pp-sec-dot" style="background:var(--orange);"></div>Leadership<div class="pp-sec-weight" style="color:var(--orange);">4%</div></div>
       <div class="pp-metric"><span class="pp-metric-lbl">Escalations to manager</span><span class="pp-metric-val">${activeM.escalations}</span></div>
-      <div class="pp-metric"><span class="pp-metric-lbl">Punctuality rate</span><span class="pp-metric-val">${activeM.punctuality}%</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">On-time days / total</span><span class="pp-metric-val">${activeM.punct_on_time} / ${activeM.punct_total}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Punctuality rate</span><span class="pp-metric-val">${activeM.punctuality.toFixed(1)}%</span></div>
       <div class="pp-metric"><span class="pp-metric-lbl">Contribution</span><span class="pp-metric-val">${activeS.l_s.toFixed(1)} / 4 pts</span></div>
     </div>
     <div class="pp-section"><div class="pp-sec-title"><div class="pp-sec-dot" style="background:var(--red);"></div>Motivation<div class="pp-sec-weight" style="color:var(--red);">4%</div></div>
-      <div class="pp-metric"><span class="pp-metric-lbl">Absent vs avg (Δ%)</span><span class="pp-metric-val">${activeM.absent_vs_avg>0?'+':''}${activeM.absent_vs_avg}%</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Team absent days</span><span class="pp-metric-val">${activeM.absent_team_days}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Company avg absenteeism</span><span class="pp-metric-val">${activeM.absent_company_rate}%</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Δ vs avg</span><span class="pp-metric-val">${activeM.absent_vs_avg>0?'+':''}${activeM.absent_vs_avg.toFixed(1)}%</span></div>
       <div class="pp-metric"><span class="pp-metric-lbl">TL Complaints</span><span class="pp-metric-val">${activeM.complaints}</span></div>
       <div class="pp-metric"><span class="pp-metric-lbl">Transfer requests</span><span class="pp-metric-val">${activeM.transfers}</span></div>
       <div class="pp-metric"><span class="pp-metric-lbl">Contribution</span><span class="pp-metric-val">${activeS.mot_s.toFixed(1)} / 4 pts</span></div>
@@ -1138,11 +1338,7 @@ function buildPrintPage() {
       <div class="pp-metric"><span class="pp-metric-lbl" style="color:var(--red);">Below 60 At Risk</span></div>
     </div>
   </div>
-  <div class="pp-sig">
-    <div class="pp-sig-field">Manager Signature</div>
-    <div class="pp-sig-field">Team Leader Signature</div>
-    <div class="pp-sig-field">Date</div>
-  </div>
+  <div class="pp-sig"><div class="pp-sig-field">Manager Signature</div><div class="pp-sig-field">Team Leader Signature</div><div class="pp-sig-field">Date</div></div>
   <div class="pp-footer">ICO · TL Evaluation Framework · ${periodTxt} · Generated ${new Date().toLocaleDateString('en-GB')} · All scores from verifiable data sources</div>`;
 
   document.getElementById('print-output').innerHTML = html;
@@ -1159,12 +1355,6 @@ function openPrint() {
 // ═══════════════════════════════════════════════════════
 buildCalcInputs(0);
 updateScorePanel();
-
-// Restore saved API URL
-if (state.apiUrl) {
-  const urlInput = document.getElementById('api-url');
-  if (urlInput) urlInput.value = state.apiUrl;
-}
 </script>
 </body>
 </html>
