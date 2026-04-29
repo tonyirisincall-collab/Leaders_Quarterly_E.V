@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TL Evaluation — ICO</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><rect x='8' y='15' width='16' height='2.5' rx='1.25' fill='white'/><rect x='8' y='10' width='10' height='2.5' rx='1.25' fill='white'/><rect x='8' y='20' width='13' height='2.5' rx='1.25' fill='white'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f2f8;--surface:#fff;--card:#fff;
+  --border:rgba(0,0,0,.07);--border-med:rgba(0,0,0,.11);
+  --blue:#2563eb;--blue-mid:#3b82f6;--blue-light:#eff6ff;--blue-soft:#dbeafe;
+  --green:#059669;--green-light:#ecfdf5;--green-soft:#a7f3d0;
+  --yellow:#b45309;--yellow-light:#fffbeb;--yellow-soft:#fde68a;
+  --orange:#c2410c;--orange-light:#fff7ed;--orange-soft:#fed7aa;
+  --red:#dc2626;--red-light:#fef2f2;--red-soft:#fecaca;
+  --purple:#7c3aed;--purple-light:#f5f3ff;--purple-soft:#ddd6fe;
+  --text:#111827;--text2:#374151;--muted:#6b7280;--muted2:#9ca3af;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow:0 4px 16px rgba(0,0,0,.07),0 2px 6px rgba(0,0,0,.05);
+  --r:14px;--r-sm:9px;
+  --ff:'Outfit',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth;}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);overflow-x:hidden;}
+
+.app{display:grid;grid-template-columns:240px 1fr;grid-template-rows:58px 1fr;min-height:100vh;}
+
+/* TOPBAR */
+.topbar{grid-column:1/-1;background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:200;box-shadow:var(--shadow-sm);}
+.tb-logo{display:flex;align-items:center;gap:9px;}
+.tb-icon{width:30px;height:30px;background:var(--blue);border-radius:8px;display:grid;place-items:center;flex-shrink:0;}
+.tb-icon svg{width:15px;height:15px;}
+.tb-brand{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.02em;}
+.tb-brand span{color:var(--blue);}
+.tb-sep{width:1px;height:22px;background:var(--border-med);}
+.tb-period-badge{font-family:var(--fm);font-size:10px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:4px 11px;border-radius:20px;white-space:nowrap;}
+.tb-period-badge span{color:var(--blue);font-weight:600;}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.tb-score-pill{font-family:var(--fm);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;background:var(--blue-light);border:1px solid var(--blue-soft);color:var(--blue);transition:.3s;white-space:nowrap;}
+.tb-print-btn{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 14px;border-radius:20px;cursor:pointer;transition:.2s;}
+.tb-print-btn:hover{background:var(--blue-light);color:var(--blue);border-color:var(--blue-soft);}
+.tb-print-btn svg{width:13px;height:13px;}
+
+/* SIDEBAR */
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:18px 0;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto;display:flex;flex-direction:column;}
+.sidebar::-webkit-scrollbar{width:3px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:2px;}
+.nav-label-group{font-family:var(--fm);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted2);padding:14px 20px 6px;font-weight:500;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;transition:.15s;border-left:3px solid transparent;user-select:none;}
+.nav-item:hover{background:var(--bg);}
+.nav-item.active{background:var(--blue-light);border-left-color:var(--blue);}
+.nav-ic{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;flex-shrink:0;background:var(--bg);transition:.15s;}
+.nav-item.active .nav-ic{background:var(--blue-soft);}
+.nav-ic svg{width:13px;height:13px;}
+.nav-txt{font-size:12.5px;font-weight:500;color:var(--muted);flex:1;transition:.15s;}
+.nav-item:hover .nav-txt{color:var(--text2);}
+.nav-item.active .nav-txt{color:var(--blue);font-weight:600;}
+.nav-badge{font-family:var(--fm);font-size:9.5px;font-weight:600;padding:2px 7px;border-radius:8px;}
+
+.sb-score-box{margin:auto 14px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;}
+.ssb-lbl{font-size:10px;font-family:var(--fm);text-transform:uppercase;letter-spacing:.09em;color:var(--muted2);margin-bottom:7px;}
+.ssb-track{height:5px;background:var(--border-med);border-radius:100px;overflow:hidden;}
+.ssb-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--blue),var(--blue-mid));transition:width .5s ease;}
+.ssb-nums{display:flex;justify-content:space-between;margin-top:5px;}
+.ssb-cur{font-family:var(--fm);font-size:13px;font-weight:700;color:var(--blue);}
+.ssb-max{font-size:11px;color:var(--muted2);}
+
+/* MAIN */
+.main{padding:32px 36px 80px;overflow-y:auto;}
+.section{display:none;}
+.section.active{display:block;animation:sIn .25s ease both;}
+@keyframes sIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* PAGE HEADER */
+.ph{margin-bottom:28px;}
+.ph-eyebrow{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--blue);background:var(--blue-light);border:1px solid var(--blue-soft);padding:4px 11px;border-radius:20px;margin-bottom:9px;}
+.ph-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);}
+.ph-title{font-size:25px;font-weight:800;letter-spacing:-.03em;color:var(--text);}
+.ph-desc{font-size:13.5px;color:var(--muted);margin-top:5px;line-height:1.65;max-width:560px;}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px 26px;margin-bottom:16px;box-shadow:var(--shadow-sm);transition:box-shadow .2s;}
+.card:hover{box-shadow:var(--shadow);}
+.ch{display:flex;align-items:center;gap:11px;margin-bottom:16px;}
+.ci{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex-shrink:0;}
+.ci svg{width:16px;height:16px;}
+.ct{font-size:14.5px;font-weight:700;color:var(--text);letter-spacing:-.01em;}
+.cs{font-size:12px;color:var(--muted);margin-top:2px;}
+.cbadge{margin-left:auto;font-family:var(--fm);font-size:10px;letter-spacing:.05em;padding:3px 10px;border-radius:20px;font-weight:500;white-space:nowrap;border:1px solid;}
+
+/* FORMULA */
+.formula{background:var(--bg);border:1px solid var(--border-med);border-radius:var(--r-sm);padding:14px 18px;font-family:var(--fm);font-size:12.5px;line-height:2;color:var(--muted);margin:14px 0;}
+.fv{color:var(--blue);font-weight:500;} .fo{color:var(--red);} .fn{color:var(--green);font-weight:500;} .fc{color:var(--muted2);font-style:italic;}
+
+/* TABLE */
+.stbl{width:100%;border-collapse:collapse;font-size:13px;}
+.stbl thead tr{background:var(--bg);}
+.stbl thead th{padding:9px 12px;text-align:left;font-family:var(--fm);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted2);font-weight:500;border-bottom:1px solid var(--border);}
+.stbl thead th:first-child{border-radius:7px 0 0 0;} .stbl thead th:last-child{border-radius:0 7px 0 0;}
+.stbl tbody tr{border-bottom:1px solid rgba(0,0,0,.04);transition:.12s;}
+.stbl tbody tr:last-child{border-bottom:none;}
+.stbl tbody tr:hover{background:rgba(37,99,235,.02);}
+.stbl tbody td{padding:11px 12px;color:var(--muted);line-height:1.4;vertical-align:middle;}
+.pts{font-family:var(--fm);font-size:12px;font-weight:700;}
+.cg{color:var(--green)!important;} .cy{color:var(--yellow)!important;} .co{color:var(--orange)!important;} .cr{color:var(--red)!important;}
+
+/* INFO BOXES */
+.ibox{background:var(--blue-light);border:1px solid var(--blue-soft);border-radius:var(--r-sm);padding:12px 16px;font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.ibox strong{color:var(--blue);}
+.abox{background:var(--red-light);border:1px solid var(--red-soft);border-radius:var(--r-sm);padding:12px 16px;font-size:13px;color:var(--text2);line-height:1.65;margin-top:14px;}
+.abox strong{color:var(--red);}
+.gbox{background:var(--green-light);border:1px solid var(--green-soft);border-radius:var(--r-sm);padding:12px 16px;font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.gbox strong{color:var(--green);}
+.note{font-size:12.5px;color:var(--muted);background:var(--bg);border-radius:var(--r-sm);padding:12px 15px;border:1px solid var(--border);margin-top:12px;line-height:1.6;}
+.note strong{color:var(--text2);}
+
+/* PERIOD BAR */
+.period-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 22px;margin-bottom:22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:var(--shadow-sm);}
+.period-bar label{font-size:12px;color:var(--muted);font-weight:500;}
+.period-input{padding:7px 12px;border:1px solid var(--border-med);border-radius:8px;font-size:13px;font-family:var(--ff);background:var(--bg);color:var(--text);cursor:pointer;transition:.15s;}
+.period-input:focus{outline:none;border-color:var(--blue);background:var(--blue-light);}
+.period-sep{font-size:13px;color:var(--muted2);}
+.period-apply{padding:7px 18px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;font-family:var(--ff);cursor:pointer;transition:.2s;}
+.period-apply:hover{background:#1d4ed8;}
+.period-display{font-family:var(--fm);font-size:11px;color:var(--muted);margin-left:auto;text-align:right;line-height:1.5;}
+.period-display strong{color:var(--text);display:block;font-size:12.5px;}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* OVERVIEW WEIGHT BAR */
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow-sm);}
+.ov-card h4{font-family:var(--fm);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);font-weight:500;margin-bottom:14px;}
+.wbar{height:9px;border-radius:100px;display:flex;gap:3px;margin-bottom:16px;overflow:hidden;}
+.wbar div{border-radius:100px;}
+.wleg{display:flex;flex-direction:column;gap:8px;}
+.wleg-row{display:flex;align-items:center;gap:9px;}
+.wleg-sw{width:8px;height:8px;border-radius:3px;flex-shrink:0;}
+.wleg-lbl{font-size:12px;color:var(--muted);flex:1;}
+.wleg-pct{font-family:var(--fm);font-size:11px;font-weight:600;}
+
+/* DEDUCT TABLE */
+.dtbl{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;margin-top:10px;}
+.drow{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid rgba(0,0,0,.04);font-size:12.5px;transition:.12s;}
+.drow:hover{background:rgba(255,255,255,.6);}
+.drow:last-child{border-bottom:none;}
+.drow-lbl{flex:1;color:var(--muted);}
+.drow-val{font-family:var(--fm);font-size:11px;padding:3px 9px;border-radius:6px;border:1px solid;}
+
+/* COACHING SHEET */
+.sheet-cols{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+.sheet-col{font-family:var(--fm);font-size:11px;padding:4px 10px;border-radius:7px;background:var(--blue-light);border:1px solid var(--blue-soft);color:var(--blue);font-weight:500;}
+.sheet-col.tracked{background:var(--green-light);border-color:var(--green-soft);color:var(--green);}
+.sheet-col.ref{background:var(--yellow-light);border-color:var(--yellow-soft);color:var(--yellow);}
+
+/* MONTH TABS */
+.month-tabs{display:flex;gap:8px;margin-bottom:16px;}
+.month-tab{padding:8px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--muted);transition:.18s;}
+.month-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.month-tab:hover:not(.active){background:var(--blue-light);color:var(--blue);border-color:var(--blue-soft);}
+
+/* CALCULATOR LAYOUT */
+.calc-layout{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start;}
+.calc-sections{display:flex;flex-direction:column;gap:14px;}
+.calc-sec{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow-sm);}
+.csh{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.csh-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0;}
+.csh-title{font-size:13.5px;font-weight:700;color:var(--text);}
+.csh-weight{margin-left:auto;font-family:var(--fm);font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px;}
+.cr-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.cr-row:last-child{margin-bottom:0;}
+.cr-lbl{font-size:12.5px;color:var(--muted);flex:1;line-height:1.3;}
+.cr-num{padding:5px 9px;border:1px solid var(--border-med);border-radius:7px;font-size:12.5px;font-family:var(--fm);background:var(--bg);color:var(--text);width:80px;text-align:center;transition:.15s;}
+.cr-num:focus{outline:none;border-color:var(--blue);background:var(--blue-light);}
+.cr-pts{font-family:var(--fm);font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;min-width:38px;text-align:center;border:1px solid;transition:background .25s,color .25s,border-color .25s;}
+.cr-hint{font-size:11px;color:var(--muted2);white-space:nowrap;}
+
+/* SCORE PANEL — static, updated via JS, never rebuilt */
+.score-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);position:sticky;top:78px;}
+.sp-ring-wrap{display:flex;justify-content:center;margin-bottom:18px;}
+.sp-ring{position:relative;width:120px;height:120px;}
+.sp-ring svg{width:120px;height:120px;transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--bg);stroke-width:9;}
+.ring-fill{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1),stroke .4s;}
+.sp-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.sp-num{font-family:var(--fm);font-size:26px;font-weight:700;line-height:1;transition:color .3s;}
+.sp-lbl{font-size:10px;color:var(--muted2);margin-top:2px;}
+.sp-band{text-align:center;font-size:13.5px;font-weight:700;margin-bottom:14px;transition:color .3s;}
+.sp-breakdown{display:flex;flex-direction:column;gap:6px;}
+.spb-row{display:flex;align-items:center;gap:8px;}
+.spb-name{font-size:11.5px;color:var(--muted);flex:1;}
+.spb-track{width:70px;height:4px;background:var(--bg);border-radius:100px;overflow:hidden;}
+.spb-fill{height:100%;border-radius:100px;transition:width .4s ease;}
+.spb-val{font-family:var(--fm);font-size:11px;font-weight:600;min-width:30px;text-align:right;transition:color .3s;}
+.sp-sep{height:1px;background:var(--border);margin:12px 0;}
+.sp-action{background:var(--bg);border-radius:9px;padding:11px 13px;font-size:12.5px;color:var(--muted);line-height:1.6;border:1px solid var(--border);}
+.sp-action strong{color:var(--text);}
+.sp-tl-name{font-family:var(--fm);font-size:10px;color:var(--muted2);margin-top:8px;text-align:center;border-top:1px solid var(--border);padding-top:8px;word-break:break-word;}
+.sp-month-label{font-family:var(--fm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px;}
+
+/* QUARTERLY */
+.qtr-grid{display:grid;grid-template-columns:repeat(3,1fr) 1fr;gap:14px;margin-bottom:20px;}
+.qtr-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--shadow-sm);}
+.qtr-card.total-card{background:var(--blue-light);border-color:var(--blue-soft);}
+.qtr-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.qtr-title span{font-family:var(--fm);font-size:10px;color:var(--muted);font-weight:400;}
+.qtr-metric{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.04);font-size:12px;}
+.qtr-metric:last-child{border-bottom:none;}
+.qtr-metric-lbl{color:var(--muted);}
+.qtr-metric-val{font-family:var(--fm);font-size:11.5px;font-weight:700;}
+.qtr-total-row{margin-top:10px;padding-top:10px;border-top:1px solid var(--border-med);display:flex;justify-content:space-between;align-items:center;}
+.qtr-total-lbl{font-size:12px;font-weight:700;color:var(--text);}
+.qtr-total-val{font-family:var(--fm);font-size:16px;font-weight:800;color:var(--blue);}
+.total-card .qtr-total-val{font-size:22px;}
+
+/* RATING BANDS */
+.band-list{display:flex;flex-direction:column;gap:8px;}
+.band{display:flex;align-items:stretch;border:1px solid var(--border);border-radius:11px;overflow:hidden;transition:.18s;box-shadow:var(--shadow-sm);}
+.band:hover{transform:translateX(3px);box-shadow:var(--shadow);}
+.band-score{min-width:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;font-weight:700;font-size:14px;font-family:var(--fm);flex-shrink:0;}
+.band-body{padding:13px 18px;flex:1;border-left:1px solid var(--border);}
+.band-name{font-size:13.5px;font-weight:700;letter-spacing:-.01em;}
+.band-action{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.45;}
+
+/* FORMULA */
+.full-formula{background:var(--bg);border:1px solid var(--border-med);border-radius:var(--r-sm);padding:20px 24px;font-family:var(--fm);font-size:12px;line-height:2.1;color:var(--muted);margin:16px 0;}
+
+/* TL NAME FIELD */
+.tl-name-wrap{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--blue-light);border:1px solid var(--blue-soft);border-radius:var(--r-sm);margin-bottom:16px;}
+.tl-name-wrap label{font-size:12.5px;font-weight:600;color:var(--blue);white-space:nowrap;}
+.tl-name-input{flex:1;padding:7px 12px;border:1px solid var(--blue-soft);border-radius:8px;font-size:14px;font-weight:600;font-family:var(--ff);background:#fff;color:var(--text);transition:.15s;max-width:320px;}
+.tl-name-input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+
+/* SHEETS SAVE BAR */
+.sheets-bar{display:flex;align-items:center;gap:12px;background:var(--green-light);border:1px solid var(--green-soft);border-radius:var(--r-sm);padding:12px 16px;margin-bottom:16px;flex-wrap:wrap;}
+.sheets-url-input{flex:1;padding:7px 12px;border:1px solid var(--green-soft);border-radius:8px;font-size:12px;font-family:var(--fm);background:#fff;color:var(--text);min-width:260px;transition:.15s;}
+.sheets-url-input:focus{outline:none;border-color:var(--green);}
+.sheets-save-btn{display:flex;align-items:center;gap:7px;padding:7px 16px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;font-family:var(--ff);cursor:pointer;transition:.2s;white-space:nowrap;}
+.sheets-save-btn:hover{background:#047857;}
+.sheets-save-btn:disabled{opacity:.5;cursor:not-allowed;}
+.sheets-save-btn svg{width:14px;height:14px;}
+.save-status{font-family:var(--fm);font-size:11px;color:var(--green);font-weight:600;display:flex;align-items:center;gap:5px;}
+.save-status.error{color:var(--red);}
+.save-status.saving{color:var(--blue);}
+
+/* MONTH NAME ROW */
+.month-name-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.month-name-input{padding:7px 12px;border:1px solid var(--border-med);border-radius:8px;font-size:13px;font-family:var(--ff);background:var(--bg);color:var(--text);width:220px;transition:.15s;}
+.month-name-input:focus{outline:none;border-color:var(--blue);background:var(--blue-light);}
+
+/* PRINT */
+.print-preview-wrap{background:white;border:1px solid var(--border-med);border-radius:var(--r);box-shadow:var(--shadow);padding:14mm;max-width:794px;margin:0 auto;font-size:11px;}
+.pp-header{display:flex;align-items:flex-start;justify-content:space-between;border-bottom:2px solid var(--blue);padding-bottom:9px;margin-bottom:12px;}
+.pp-org{font-size:9px;font-family:var(--fm);letter-spacing:.1em;text-transform:uppercase;color:var(--blue);font-weight:600;}
+.pp-title{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-top:2px;}
+.pp-sub{font-size:9.5px;color:var(--muted);margin-top:2px;}
+.pp-meta{text-align:right;}
+.pp-tl-name{font-size:13px;font-weight:700;color:var(--text);}
+.pp-tl-label{font-size:9px;color:var(--muted);font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;}
+.pp-period{font-size:10px;font-family:var(--fm);color:var(--blue);margin-top:3px;}
+.pp-score-banner{background:#eff6ff;border:1px solid #dbeafe;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:16px;margin-bottom:12px;}
+.pp-score-big{font-family:var(--fm);font-size:24px;font-weight:800;color:var(--blue);}
+.pp-score-band{font-size:11px;font-weight:700;margin-top:1px;}
+.pp-score-action{font-size:10px;color:var(--muted);margin-top:2px;}
+.pp-breakdown-inline{display:flex;gap:10px;margin-top:4px;flex-wrap:wrap;}
+.pp-bd-item{font-family:var(--fm);font-size:9.5px;font-weight:600;padding:2px 8px;border-radius:5px;}
+.pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.pp-section{border:1px solid #e5e7eb;border-radius:8px;padding:9px 11px;}
+.pp-sec-title{font-size:9.5px;font-weight:700;color:var(--text);letter-spacing:.03em;display:flex;align-items:center;gap:6px;margin-bottom:7px;border-bottom:1px solid #f3f4f6;padding-bottom:5px;}
+.pp-sec-dot{width:7px;height:7px;border-radius:2px;flex-shrink:0;}
+.pp-sec-weight{margin-left:auto;font-family:var(--fm);font-size:9px;font-weight:600;}
+.pp-metric{display:flex;justify-content:space-between;align-items:center;padding:3.5px 0;border-bottom:1px solid #f9fafb;font-size:10px;}
+.pp-metric:last-child{border-bottom:none;}
+.pp-metric-lbl{color:#6b7280;flex:1;}
+.pp-metric-val{font-family:var(--fm);font-size:10px;font-weight:700;}
+.pp-metric-pts{font-family:var(--fm);font-size:10px;font-weight:700;margin-left:8px;}
+.pp-qtr{border:1px solid #e5e7eb;border-radius:8px;padding:9px 11px;margin-bottom:10px;}
+.pp-qtr-title{font-size:10px;font-weight:700;color:var(--text);margin-bottom:7px;border-bottom:1px solid #f3f4f6;padding-bottom:5px;display:flex;align-items:center;justify-content:space-between;}
+.pp-qtr-grid{display:grid;grid-template-columns:repeat(3,1fr) 90px;gap:8px;}
+.pp-qtr-col{border-right:1px solid #f3f4f6;padding-right:8px;}
+.pp-qtr-col:last-child{border-right:none;}
+.pp-qtr-month{font-size:9.5px;font-weight:700;color:var(--blue);margin-bottom:5px;font-family:var(--fm);}
+.pp-qtr-row{display:flex;justify-content:space-between;font-size:9.5px;padding:2px 0;color:#6b7280;}
+.pp-qtr-row span:last-child{font-family:var(--fm);font-weight:700;}
+.pp-qtr-total{font-size:11px;font-weight:800;color:var(--blue);font-family:var(--fm);margin-top:5px;border-top:1px solid #e5e7eb;padding-top:4px;}
+.pp-sig{display:flex;gap:20px;margin-top:10px;}
+.pp-sig-field{flex:1;border-top:1px solid #9ca3af;padding-top:5px;font-size:9px;color:#9ca3af;font-family:var(--fm);}
+.pp-footer{text-align:center;font-size:8.5px;color:#9ca3af;font-family:var(--fm);border-top:1px solid #e5e7eb;padding-top:7px;margin-top:8px;letter-spacing:.04em;}
+
+@media print {
+  @page{size:A4 portrait;margin:12mm 13mm;}
+  body{background:#fff!important;font-size:10.5px!important;}
+  .app{display:block!important;}
+  .topbar,.sidebar,.tb-print-btn,.sb-score-box,.nav-label-group,.section:not(#s-print){display:none!important;}
+  #s-print{display:block!important;}
+  .main{padding:0!important;}
+  .no-print{display:none!important;}
+  .card,.ov-card,.calc-sec,.score-panel,.qtr-card{box-shadow:none!important;border:1px solid #e5e7eb!important;}
+}
+
+@media(max-width:900px){
+  .app{grid-template-columns:1fr;}
+  .topbar{grid-column:1;}
+  .sidebar{display:none;}
+  .main{padding:20px 16px 60px;}
+  .ov-grid,.two-col,.calc-layout,.qtr-grid{grid-template-columns:1fr!important;}
+  .calc-layout .score-panel{position:static;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-logo">
+    <div class="tb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+    <div class="tb-brand">TL<span>Eval</span> <span style="color:var(--muted2);font-weight:400;font-size:13px;">— ICO</span></div>
+  </div>
+  <div class="tb-sep"></div>
+  <div class="tb-period-badge">Period: <span id="tb-period-txt">Not set</span></div>
+  <div class="tb-right">
+    <div class="tb-score-pill" id="tb-score-pill">Score: — / 100</div>
+    <div class="tb-print-btn" onclick="openPrint()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print A4
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="nav-label-group">Framework</div>
+  <div class="nav-item active" data-sec="overview" onclick="go('overview',this)">
+    <div class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+    <span class="nav-txt">Overview</span>
+  </div>
+  <div class="nav-item" data-sec="do" onclick="go('do',this)">
+    <div class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+    <span class="nav-txt">DO Achievement</span>
+    <span class="nav-badge" style="background:var(--blue-light);color:var(--blue);">80%</span>
+  </div>
+  <div class="nav-item" data-sec="coaching" onclick="go('coaching',this)">
+    <div class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="11" x2="17" y2="17"/><line x1="14" y1="14" x2="20" y2="14"/></svg></div>
+    <span class="nav-txt">Coaching</span>
+    <span class="nav-badge" style="background:var(--green-light);color:var(--green);">7%</span>
+  </div>
+  <div class="nav-item" data-sec="biz" onclick="go('biz',this)">
+    <div class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+    <span class="nav-txt">Business Rules</span>
+    <span class="nav-badge" style="background:var(--yellow-light);color:var(--yellow);">5%</span>
+  </div>
+  <div class="nav-item" data-sec="leadership" onclick="go('leadership',this)">
+    <div class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+    <span class="nav-txt">Leadership</span>
+    <span class="nav-badge" style="background:var(--orange-light);color:var(--orange);">4%</span>
+  </div>
+  <div class="nav-item" data-sec="motivation" onclick="go('motivation',this)">
+    <div class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+    <span class="nav-txt">Motivation</span>
+    <span class="nav-badge" style="background:var(--red-light);color:var(--red);">4%</span>
+  </div>
+
+  <div class="nav-label-group">Tools</div>
+  <div class="nav-item" data-sec="calculator" onclick="go('calculator',this)">
+    <div class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></div>
+    <span class="nav-txt">Monthly Score Entry</span>
+  </div>
+  <div class="nav-item" data-sec="quarterly" onclick="go('quarterly',this)">
+    <div class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div>
+    <span class="nav-txt">Quarterly Summary</span>
+  </div>
+  <div class="nav-item" data-sec="final" onclick="go('final',this)">
+    <div class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+    <span class="nav-txt">Rating Bands</span>
+  </div>
+  <div class="nav-item" data-sec="print" onclick="go('print',this)">
+    <div class="nav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
+    <span class="nav-txt">Print Preview</span>
+  </div>
+
+  <div class="sb-score-box">
+    <div class="ssb-lbl">Current Score</div>
+    <div class="ssb-track"><div class="ssb-fill" id="sb-fill" style="width:0%"></div></div>
+    <div class="ssb-nums"><div class="ssb-cur" id="sb-score">—</div><div class="ssb-max">/ 100</div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- OVERVIEW -->
+<div id="s-overview" class="section active">
+  <div class="ph">
+    <div class="ph-eyebrow"><span class="ph-dot"></span>Framework</div>
+    <div class="ph-title">TL Evaluation System</div>
+    <div class="ph-desc">Every metric is a real number pulled from Google Sheets, Dialer, EyeBeam, or your manager log. Nothing evaluated by feeling.</div>
+  </div>
+  <div class="period-bar">
+    <label>Evaluation period:</label>
+    <input type="date" class="period-input" id="period-from">
+    <span class="period-sep">→</span>
+    <input type="date" class="period-input" id="period-to">
+    <button class="period-apply" onclick="applyPeriod()">Apply</button>
+    <div class="period-display" id="period-display"><span>Set a period to track this evaluation</span></div>
+  </div>
+  <div class="ov-grid">
+    <div class="ov-card">
+      <h4>Weight Distribution</h4>
+      <div class="wbar">
+        <div style="width:80%;background:#2563eb;"></div>
+        <div style="width:7%;background:#059669;"></div>
+        <div style="width:5%;background:#b45309;"></div>
+        <div style="width:4%;background:#c2410c;"></div>
+        <div style="width:4%;background:#dc2626;"></div>
+      </div>
+      <div class="wleg">
+        <div class="wleg-row"><span class="wleg-sw" style="background:var(--blue);"></span><span class="wleg-lbl">DO Achievement</span><span class="wleg-pct" style="color:var(--blue);">80%</span></div>
+        <div class="wleg-row"><span class="wleg-sw" style="background:var(--green);"></span><span class="wleg-lbl">Coaching Effectiveness</span><span class="wleg-pct" style="color:var(--green);">7%</span></div>
+        <div class="wleg-row"><span class="wleg-sw" style="background:var(--yellow);"></span><span class="wleg-lbl">Business Rules</span><span class="wleg-pct" style="color:var(--yellow);">5%</span></div>
+        <div class="wleg-row"><span class="wleg-sw" style="background:var(--orange);"></span><span class="wleg-lbl">Leadership Skills</span><span class="wleg-pct" style="color:var(--orange);">4%</span></div>
+        <div class="wleg-row"><span class="wleg-sw" style="background:var(--red);"></span><span class="wleg-lbl">Motivation & Attitude</span><span class="wleg-pct" style="color:var(--red);">4%</span></div>
+      </div>
+    </div>
+    <div class="ov-card">
+      <h4>Data Sources</h4>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-top:2px;">
+        <div><div style="font-size:10px;font-family:var(--fm);letter-spacing:.09em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:5px;">Call Tools</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;"><strong style="color:var(--text2);">Dialer</strong> and <strong style="color:var(--text2);">EyeBeam</strong> — DO count pulled from call logs at end of period.</div></div>
+        <div><div style="font-size:10px;font-family:var(--fm);letter-spacing:.09em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:5px;">Google Sheets</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;">Coaching log, task tracker, absenteeism records, report deadlines.</div></div>
+        <div><div style="font-size:10px;font-family:var(--fm);letter-spacing:.09em;text-transform:uppercase;color:var(--yellow);font-weight:600;margin-bottom:5px;">Manager Log</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;">You log in real-time: follow-ups needed, escalations, complaints, transfer requests.</div></div>
+        <div><div style="font-size:10px;font-family:var(--fm);letter-spacing:.09em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:5px;">Attendance Records</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;">TL arrival time vs shift start. Team absence days vs working days.</div></div>
+      </div>
+    </div>
+  </div>
+  <div style="background:linear-gradient(135deg,var(--blue-light) 0%,#f0f7ff 100%);border:1px solid var(--blue-soft);border-radius:var(--r);padding:22px 26px;">
+    <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:9px;"><div style="width:20px;height:20px;background:var(--blue);border-radius:6px;display:grid;place-items:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>The Core Rule</div>
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:13.5px;">
+      <div style="display:flex;gap:11px;"><div style="width:22px;height:22px;background:var(--red-light);border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--red);flex-shrink:0;margin-top:1px;">✗</div><span style="color:var(--muted);">"He seems demotivated lately" <span style="color:var(--red);">→ not a score</span></span></div>
+      <div style="display:flex;gap:11px;"><div style="width:22px;height:22px;background:var(--green-light);border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--green);flex-shrink:0;margin-top:1px;">✓</div><span style="color:var(--muted);">4 agents requested transfer this month <span style="color:var(--green);">→ measurable, defensible, actionable</span></span></div>
+      <div style="display:flex;gap:11px;"><div style="width:22px;height:22px;background:var(--red-light);border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--red);flex-shrink:0;margin-top:1px;">✗</div><span style="color:var(--muted);">"TL communicates well" <span style="color:var(--red);">→ opinion, cannot be scored</span></span></div>
+      <div style="display:flex;gap:11px;"><div style="width:22px;height:22px;background:var(--green-light);border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--green);flex-shrink:0;margin-top:1px;">✓</div><span style="color:var(--muted);">2 tasks required follow-up from manager this month <span style="color:var(--green);">→ logged, verifiable</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DO ACHIEVEMENT -->
+<div id="s-do" class="section">
+  <div class="ph"><div class="ph-eyebrow"><span class="ph-dot"></span>80% Weight — Biggest Driver</div><div class="ph-title">DO Achievement</div><div class="ph-desc">Actual DOs completed by the team vs the target for the period. Pulled directly from Dialer / EyeBeam call logs exported to Google Sheets.</div></div>
+  <div class="ibox"><strong>Data source:</strong> At end of the evaluation period, export call results from <strong>Dialer</strong> and <strong>EyeBeam</strong> to your Google Sheet. Count completed DOs per agent. Sum the team total. Compare to the target set for that period.</div>
+  <div class="card">
+    <div class="ch"><div class="ci" style="background:var(--blue-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><div class="ct">DO Achievement Rate</div><div class="cs">Dialer + EyeBeam export → Google Sheets</div></div><span class="cbadge" style="background:var(--blue-light);border-color:var(--blue-soft);color:var(--blue);">Auto from Sheets</span></div>
+    <div class="formula"><span class="fc"># Pull team total from Dialer + EyeBeam logs</span><br><span class="fv">DO_Rate</span> <span class="fo">=</span> ( <span class="fv">Team_Actual_DOs</span> <span class="fo">÷</span> <span class="fv">Team_Target_DOs</span> ) <span class="fo">×</span> <span class="fn">100</span></div>
+    <table class="stbl"><thead><tr><th>DO Rate</th><th>Score</th><th>Required Action</th></tr></thead><tbody>
+      <tr><td class="cg">≥ 100%</td><td><span class="pts cg">4 / 4</span></td><td>Target fully met</td></tr>
+      <tr><td class="cy">90 – 99%</td><td><span class="pts cy">3 / 4</span></td><td>Close — identify gap in 1-on-1</td></tr>
+      <tr><td class="co">80 – 89%</td><td><span class="pts co">2 / 4</span></td><td>Coaching conversation required this cycle</td></tr>
+      <tr><td class="cr">Below 80%</td><td><span class="pts cr">0 / 4</span></td><td>Immediate review — written root cause mandatory</td></tr>
+    </tbody></table>
+    <div class="note"><strong>Zero DOs:</strong> Any period with zero team DOs triggers automatic review regardless of reason.</div>
+  </div>
+</div>
+
+<!-- COACHING -->
+<div id="s-coaching" class="section">
+  <div class="ph"><div class="ph-eyebrow"><span class="ph-dot" style="background:var(--green);"></span>7% Weight</div><div class="ph-title">Coaching Effectiveness</div><div class="ph-desc">Did the TL's coaching sessions actually move agent numbers? Measured from your Google Sheets coaching log.</div></div>
+  <div class="card">
+    <div class="ch"><div class="ci" style="background:var(--green-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="ct">Coaching Sheet — Column Reference</div></div></div>
+    <div class="sheet-cols"><span class="sheet-col tracked">Agent ✓</span><span class="sheet-col tracked">TL ✓</span><span class="sheet-col tracked">Date ✓</span><span class="sheet-col tracked">Issue ✓</span><span class="sheet-col tracked">Action Taken ✓</span><span class="sheet-col ref">Call Recording Link</span><span class="sheet-col ref">Notes (agent view)</span><span class="sheet-col tracked">Solved? ✓</span><span class="sheet-col tracked">Next Review ✓</span><span class="sheet-col tracked">TL Done? ✓</span><span class="sheet-col tracked">Tony OK? ✓</span></div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ci" style="background:var(--green-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div><div class="ct">Coaching Completion Rate</div><div class="cs">TL Done = Yes AND Tony OK = Yes</div></div></div>
+    <div class="formula"><span class="fv">Coaching_Rate</span> <span class="fo">=</span> ( <span class="fv">Rows where TL Done=Yes AND Tony OK=Yes</span> <span class="fo">÷</span> <span class="fv">Total coaching rows for this TL</span> ) <span class="fo">×</span> <span class="fn">100</span></div>
+    <table class="stbl"><thead><tr><th>Completion Rate</th><th>Score</th><th>What It Means</th></tr></thead><tbody>
+      <tr><td class="cg">≥ 90%</td><td><span class="pts cg">4 / 4</span></td><td>TL follows through on all sessions</td></tr>
+      <tr><td class="cy">75 – 89%</td><td><span class="pts cy">3 / 4</span></td><td>Good — minor gaps only</td></tr>
+      <tr><td class="co">60 – 74%</td><td><span class="pts co">2 / 4</span></td><td>Notable incomplete sessions</td></tr>
+      <tr><td class="cr">Below 60%</td><td><span class="pts cr">0 / 4</span></td><td>Major follow-through issue — escalate</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- BUSINESS RULES -->
+<div id="s-biz" class="section">
+  <div class="ph"><div class="ph-eyebrow"><span class="ph-dot" style="background:var(--yellow);"></span>5% Weight</div><div class="ph-title">Business Rules & Alignment</div></div>
+  <div class="two-col">
+    <div class="card"><div class="ch"><div class="ci" style="background:var(--yellow-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="ct">Reports Submitted Late</div></div></div><table class="stbl"><thead><tr><th>Count</th><th>Score</th></tr></thead><tbody><tr><td class="cg">0</td><td><span class="pts cg">4/4</span></td></tr><tr><td class="cy">1</td><td><span class="pts cy">3/4</span></td></tr><tr><td class="co">2</td><td><span class="pts co">2/4</span></td></tr><tr><td class="cr">3+</td><td><span class="pts cr">0/4</span></td></tr></tbody></table></div>
+    <div class="card"><div class="ch"><div class="ci" style="background:var(--yellow-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><div class="ct">Sub-Tasks Completed Late</div></div></div><table class="stbl"><thead><tr><th>Count</th><th>Score</th></tr></thead><tbody><tr><td class="cg">0</td><td><span class="pts cg">4/4</span></td></tr><tr><td class="cy">1</td><td><span class="pts cy">3/4</span></td></tr><tr><td class="co">2</td><td><span class="pts co">2/4</span></td></tr><tr><td class="cr">3+</td><td><span class="pts cr">0/4</span></td></tr></tbody></table></div>
+  </div>
+  <div class="card"><div class="ch"><div class="ci" style="background:var(--yellow-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="ct">Manager Follow-ups on Same Task</div></div></div>
+  <table class="stbl"><thead><tr><th>Follow-up Count</th><th>Score</th><th>Signal</th></tr></thead><tbody><tr><td class="cg">0</td><td><span class="pts cg">4/4</span></td><td>Executes first time</td></tr><tr><td class="cy">1</td><td><span class="pts cy">3/4</span></td><td>One slip — acceptable</td></tr><tr><td class="co">2</td><td><span class="pts co">2/4</span></td><td>Pattern forming</td></tr><tr><td class="cr">3+</td><td><span class="pts cr">0/4</span></td><td>Accountability issue</td></tr></tbody></table></div>
+</div>
+
+<!-- LEADERSHIP -->
+<div id="s-leadership" class="section">
+  <div class="ph"><div class="ph-eyebrow"><span class="ph-dot" style="background:var(--orange);"></span>4% Weight</div><div class="ph-title">Leadership Skills</div></div>
+  <div class="card"><div class="ch"><div class="ci" style="background:var(--orange-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><div class="ct">Escalations to Manager</div></div></div>
+  <table class="stbl"><thead><tr><th>Escalations</th><th>Score</th><th>Interpretation</th></tr></thead><tbody><tr><td class="cg">0 – 2</td><td><span class="pts cg">4/4</span></td><td>Resolves independently</td></tr><tr><td class="cy">3 – 4</td><td><span class="pts cy">3/4</span></td><td>Acceptable</td></tr><tr><td class="co">5 – 6</td><td><span class="pts co">2/4</span></td><td>Over-relying on manager</td></tr><tr><td class="cr">7+</td><td><span class="pts cr">0/4</span></td><td>Coaching needed</td></tr></tbody></table></div>
+  <div class="card"><div class="ch"><div class="ci" style="background:var(--orange-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="ct">Punctuality Rate</div></div></div>
+  <div class="formula"><span class="fv">Punctuality_Rate</span> <span class="fo">=</span> ( <span class="fv">Days_Arrived_On_Time</span> <span class="fo">÷</span> <span class="fv">Total_Working_Days</span> ) <span class="fo">×</span> <span class="fn">100</span></div>
+  <table class="stbl"><thead><tr><th>Rate</th><th>Score</th></tr></thead><tbody><tr><td class="cg">100%</td><td><span class="pts cg">4/4</span></td></tr><tr><td class="cy">96–99%</td><td><span class="pts cy">3/4</span></td></tr><tr><td class="co">90–95%</td><td><span class="pts co">2/4</span></td></tr><tr><td class="cr">Below 90%</td><td><span class="pts cr">0/4</span></td></tr></tbody></table></div>
+</div>
+
+<!-- MOTIVATION -->
+<div id="s-motivation" class="section">
+  <div class="ph"><div class="ph-eyebrow"><span class="ph-dot" style="background:var(--red);"></span>4% Weight</div><div class="ph-title">Motivation & Attitude</div></div>
+  <div class="card"><div class="ch"><div class="ci" style="background:var(--green-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div><div class="ct">Team Absenteeism Rate</div></div></div>
+  <table class="stbl"><thead><tr><th>vs Company Average</th><th>Score</th></tr></thead><tbody><tr><td class="cg">Below company average</td><td><span class="pts cg">4/4</span></td></tr><tr><td class="cy">Equal to company average</td><td><span class="pts cy">3/4</span></td></tr><tr><td class="co">+1% to +3% above</td><td><span class="pts co">2/4</span></td></tr><tr><td class="cr">More than +3% above</td><td><span class="pts cr">0/4</span></td></tr></tbody></table></div>
+  <div class="card" style="border-color:rgba(220,38,38,.12);">
+    <div class="ch"><div class="ci" style="background:var(--red-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div><div class="ct">Negative Behavior — Deduction Model</div></div></div>
+    <div class="two-col">
+      <div><div style="font-size:10px;font-family:var(--fm);letter-spacing:.09em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:7px;">Complaints FROM the TL</div><div class="dtbl"><div class="drow"><span class="drow-lbl">0</span><span class="drow-val" style="background:var(--green-light);border-color:var(--green-soft);color:var(--green);">4 pts</span></div><div class="drow"><span class="drow-lbl">1 – 2</span><span class="drow-val" style="background:var(--yellow-light);border-color:var(--yellow-soft);color:var(--yellow);">3 pts</span></div><div class="drow"><span class="drow-lbl">3 – 4</span><span class="drow-val" style="background:var(--orange-light);border-color:var(--orange-soft);color:var(--orange);">2 pts</span></div><div class="drow"><span class="drow-lbl">5+</span><span class="drow-val" style="background:var(--red-light);border-color:var(--red-soft);color:var(--red);">0 pts</span></div></div></div>
+      <div><div style="font-size:10px;font-family:var(--fm);letter-spacing:.09em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:7px;">Transfer Requests (from agents)</div><div class="dtbl"><div class="drow"><span class="drow-lbl">0</span><span class="drow-val" style="background:var(--green-light);border-color:var(--green-soft);color:var(--green);">4 pts</span></div><div class="drow"><span class="drow-lbl">1</span><span class="drow-val" style="background:var(--yellow-light);border-color:var(--yellow-soft);color:var(--yellow);">3 pts (−1)</span></div><div class="drow"><span class="drow-lbl">2+</span><span class="drow-val" style="background:var(--red-light);border-color:var(--red-soft);color:var(--red);">0 pts + Flag</span></div></div></div>
+    </div>
+    <div class="abox"><strong>Auto-Flag:</strong> Any transfer request triggers mandatory 1-on-1 before score is finalised.</div>
+  </div>
+</div>
+
+<!-- MONTHLY SCORE ENTRY — fixed reactive calculator -->
+<div id="s-calculator" class="section">
+  <div class="ph">
+    <div class="ph-eyebrow"><span class="ph-dot" style="background:var(--purple);"></span>Monthly Entry</div>
+    <div class="ph-title">Monthly Score Calculator</div>
+    <div class="ph-desc">Enter numbers — score updates live. Use the save button to push to Google Sheets.</div>
+  </div>
+
+  <!-- TL NAME -->
+  <div class="tl-name-wrap">
+    <label>Team Leader Name:</label>
+    <input type="text" class="tl-name-input" id="tl-name" placeholder="e.g. Ahmed Hassan" oninput="state.tlName=this.value;updateScorePanel();">
+  </div>
+
+  <!-- SHEETS API URL -->
+  <div class="sheets-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+    <label style="font-size:12px;font-weight:600;color:var(--green);white-space:nowrap;">Apps Script URL:</label>
+    <input type="text" class="sheets-url-input" id="api-url" placeholder="Paste your deployed Apps Script Web App URL here…" oninput="state.apiUrl=this.value;saveApiUrl();">
+    <button class="sheets-save-btn" onclick="saveToSheets()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      Save to Sheets
+    </button>
+    <div id="save-status" class="save-status" style="display:none;"></div>
+  </div>
+
+  <!-- MONTH TABS -->
+  <div class="month-tabs">
+    <div class="month-tab active" onclick="switchMonth(0,this)">Month 1</div>
+    <div class="month-tab" onclick="switchMonth(1,this)">Month 2</div>
+    <div class="month-tab" onclick="switchMonth(2,this)">Month 3</div>
+  </div>
+
+  <!-- CALCULATOR BODY — inputs stay; only score panel updates -->
+  <div class="calc-layout">
+    <div class="calc-sections" id="calc-inputs">
+      <!-- injected once, then only values are updated -->
+    </div>
+    <!-- SCORE PANEL — never rebuilt, only DOM-patched -->
+    <div class="score-panel">
+      <div class="sp-month-label" id="sp-month-label">Month 1</div>
+      <div class="sp-ring-wrap">
+        <div class="sp-ring">
+          <svg viewBox="0 0 120 120"><circle class="ring-bg" cx="60" cy="60" r="50"/><circle class="ring-fill" id="ring-fill-el" cx="60" cy="60" r="50" stroke="var(--blue)" stroke-dasharray="314.2" stroke-dashoffset="314.2"/></svg>
+          <div class="sp-overlay"><div class="sp-num" id="sp-num">0</div><div class="sp-lbl">/ 100</div></div>
+        </div>
+      </div>
+      <div class="sp-band" id="sp-band">—</div>
+      <div class="sp-breakdown" id="sp-breakdown"></div>
+      <div class="sp-sep"></div>
+      <div class="sp-action" id="sp-action">Enter values to see score.</div>
+      <div class="sp-tl-name" id="sp-tl-name" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUARTERLY SUMMARY -->
+<div id="s-quarterly" class="section">
+  <div class="ph"><div class="ph-eyebrow"><span class="ph-dot"></span>3-Month View</div><div class="ph-title">Quarterly Summary</div><div class="ph-desc">Auto-populated from Monthly Score Entry.</div></div>
+  <div class="qtr-grid" id="qtr-grid"></div>
+  <div class="card">
+    <div class="ch"><div class="ci" style="background:var(--blue-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="ct" id="qtr-band-txt">—</div><div class="cs" id="qtr-action-txt">Enter scores in Monthly Score Entry to see quarterly result.</div></div></div>
+    <div style="margin-top:12px;">
+      <button class="sheets-save-btn" style="background:var(--blue);" onclick="saveQuarterlyToSheets()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Save Quarterly to Sheets
+      </button>
+      <span id="qtr-save-status" style="margin-left:12px;font-family:var(--fm);font-size:11px;"></span>
+    </div>
+  </div>
+</div>
+
+<!-- RATING BANDS -->
+<div id="s-final" class="section">
+  <div class="ph"><div class="ph-eyebrow"><span class="ph-dot"></span>Reference</div><div class="ph-title">Rating Bands & Formula</div></div>
+  <div class="card">
+    <div class="ch"><div class="ci" style="background:var(--blue-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div><div class="ct">Full Scoring Formula</div></div></div>
+    <div class="full-formula" style="font-family:var(--fm);font-size:12px;line-height:2.1;color:var(--muted);">
+      <span style="color:var(--muted2);font-style:italic;"># Each metric scored 0–4, normalised to its weight</span><br><br>
+      <span style="color:var(--blue);">DO_score &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--red);"> = </span>(do_pts / 4) × <span style="color:var(--green);">80</span><br>
+      <span style="color:var(--blue);">coaching_score &nbsp;</span><span style="color:var(--red);"> = </span>(coaching_pts / 4) × <span style="color:var(--green);">7</span><br>
+      <span style="color:var(--blue);">biz_score &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--red);"> = </span>avg(reports_pts, subtasks_pts, followups_pts) / 4 × <span style="color:var(--green);">5</span><br>
+      <span style="color:var(--blue);">leadership_score</span><span style="color:var(--red);"> = </span>avg(escalations_pts, punctuality_pts) / 4 × <span style="color:var(--green);">4</span><br>
+      <span style="color:var(--blue);">motivation_score</span><span style="color:var(--red);"> = </span>avg(absent_pts, complaints_pts, transfers_pts) / 4 × <span style="color:var(--green);">4</span><br>
+      <br>────────────────────────────────────<br>
+      <strong style="color:var(--text);">TOTAL</strong><span style="color:var(--red);"> = </span>sum of all above &nbsp;<span style="color:var(--muted2);font-style:italic;"># max = 100 pts</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ci" style="background:var(--green-light);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></div><div><div class="ct">Rating Bands</div></div></div>
+    <div class="band-list">
+      <div class="band" style="border-color:rgba(5,150,105,.2);"><div class="band-score" style="background:var(--green-light);color:var(--green);">90–100</div><div class="band-body"><div class="band-name" style="color:var(--green);">Exceptional</div><div class="band-action">Eligible for promotion track / stretch assignments</div></div></div>
+      <div class="band" style="border-color:rgba(5,150,105,.12);"><div class="band-score" style="background:#f0fdf7;color:#10b981;">80–89</div><div class="band-body"><div class="band-name" style="color:#10b981;">Strong Performer</div><div class="band-action">Positive recognition — continue trajectory</div></div></div>
+      <div class="band" style="border-color:rgba(180,83,9,.18);"><div class="band-score" style="background:var(--yellow-light);color:var(--yellow);">70–79</div><div class="band-body"><div class="band-name" style="color:var(--yellow);">Meets Expectations</div><div class="band-action">No formal action — monitor weak areas next cycle</div></div></div>
+      <div class="band" style="border-color:rgba(194,65,12,.2);"><div class="band-score" style="background:var(--orange-light);color:var(--orange);">60–69</div><div class="band-body"><div class="band-name" style="color:var(--orange);">Needs Improvement</div><div class="band-action">Formal improvement plan with 30-day checkpoints</div></div></div>
+      <div class="band" style="border-color:rgba(220,38,38,.22);"><div class="band-score" style="background:var(--red-light);color:var(--red);">Below 60</div><div class="band-body"><div class="band-name" style="color:var(--red);">At Risk</div><div class="band-action">Immediate 1-on-1 + structured PIP within 5 working days</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT PREVIEW -->
+<div id="s-print" class="section">
+  <div class="ph no-print"><div class="ph-eyebrow"><span class="ph-dot"></span>A4 Output</div><div class="ph-title">Print Preview</div></div>
+  <div class="no-print" style="display:flex;gap:10px;margin-bottom:20px;">
+    <button class="period-apply" onclick="window.print()">Print Now</button>
+    <button class="period-apply" style="background:var(--green);" onclick="buildPrintPage()">Refresh Preview</button>
+  </div>
+  <div class="print-preview-wrap" id="print-output"><div style="text-align:center;color:var(--muted);font-size:13px;padding:40px 0;">Enter scores in Monthly Score Entry, then click Refresh Preview.</div></div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+const state = {
+  tlName: '',
+  apiUrl: localStorage.getItem('tleval_api_url') || '',
+  period: { from: '', to: '' },
+  activeMonth: 0,
+  months: [
+    { name:'Month 1', do_rate:0, coaching_rate:0, reports:0, subtasks:0, followups:0, escalations:0, punctuality:100, absent_vs_avg:0, complaints:0, transfers:0 },
+    { name:'Month 2', do_rate:0, coaching_rate:0, reports:0, subtasks:0, followups:0, escalations:0, punctuality:100, absent_vs_avg:0, complaints:0, transfers:0 },
+    { name:'Month 3', do_rate:0, coaching_rate:0, reports:0, subtasks:0, followups:0, escalations:0, punctuality:100, absent_vs_avg:0, complaints:0, transfers:0 }
+  ]
+};
+
+// ═══════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════
+function go(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  if (btn && btn.classList) btn.classList.add('active');
+  if (id === 'quarterly') buildQuarterly();
+  if (id === 'print') buildPrintPage();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════
+//  PERIOD
+// ═══════════════════════════════════════════════════════
+function applyPeriod() {
+  const f = document.getElementById('period-from').value;
+  const t = document.getElementById('period-to').value;
+  if (!f || !t) { alert('Please set both dates.'); return; }
+  state.period = { from: f, to: t };
+  const fmt = d => d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+  const fd = new Date(f), td = new Date(t);
+  document.getElementById('period-display').innerHTML = `<strong>${fmt(fd)} — ${fmt(td)}</strong>`;
+  document.getElementById('tb-period-txt').textContent = fmt(fd) + ' → ' + fmt(td);
+}
+
+// ═══════════════════════════════════════════════════════
+//  SCORING
+// ═══════════════════════════════════════════════════════
+function scoreDO(r)       { return r>=100?4:r>=90?3:r>=80?2:0; }
+function scoreCoaching(r) { return r>=90?4:r>=75?3:r>=60?2:0; }
+function scoreReports(n)  { return n===0?4:n===1?3:n===2?2:0; }
+function scoreSubtasks(n) { return n===0?4:n===1?3:n===2?2:0; }
+function scoreFollowups(n){ return n===0?4:n===1?3:n===2?2:0; }
+function scoreEscalations(n){ return n<=2?4:n<=4?3:n<=6?2:0; }
+function scorePunctuality(r){ return r>=100?4:r>=96?3:r>=90?2:0; }
+function scoreAbsent(d)   { return d<0?4:d===0?3:d<=3?2:0; }
+function scoreComplaints(n){ return n===0?4:n<=2?3:n<=4?2:0; }
+function scoreTransfers(n){ return n===0?4:n===1?3:0; }
+
+function calcMonthScore(m) {
+  const dp  = scoreDO(m.do_rate);
+  const cp  = scoreCoaching(m.coaching_rate);
+  const rp  = scoreReports(m.reports);
+  const sp  = scoreSubtasks(m.subtasks);
+  const fp  = scoreFollowups(m.followups);
+  const ep  = scoreEscalations(m.escalations);
+  const pp  = scorePunctuality(m.punctuality);
+  const ap  = scoreAbsent(m.absent_vs_avg);
+  const comp= scoreComplaints(m.complaints);
+  const tp  = scoreTransfers(m.transfers);
+
+  const do_s  = (dp / 4) * 80;
+  const c_s   = (cp / 4) * 7;
+  const b_s   = ((rp + sp + fp) / 3 / 4) * 5;
+  const l_s   = ((ep + pp) / 2 / 4) * 4;
+  const mot_s = ((ap + comp + tp) / 3 / 4) * 4;
+  const total = do_s + c_s + b_s + l_s + mot_s;
+
+  return { dp, cp, rp, sp, fp, ep, pp, ap, comp, tp, do_s, c_s, b_s, l_s, mot_s, total };
+}
+
+function getBandInfo(score) {
+  if (score >= 90) return { label:'Exceptional',        color:'var(--green)',  action:'Eligible for promotion track or stretch assignments.' };
+  if (score >= 80) return { label:'Strong Performer',   color:'#10b981',       action:'Positive recognition — continue current trajectory.' };
+  if (score >= 70) return { label:'Meets Expectations', color:'var(--yellow)', action:'No formal action — monitor 1–2 weak areas next cycle.' };
+  if (score >= 60) return { label:'Needs Improvement',  color:'var(--orange)', action:'Formal improvement plan with 30-day checkpoints required.' };
+  return                   { label:'At Risk',            color:'var(--red)',    action:'Immediate 1-on-1 + structured PIP within 5 working days.' };
+}
+
+function ptColor(p)  { return p===4?'var(--green)':p===3?'var(--yellow)':p===2?'var(--orange)':'var(--red)'; }
+function ptBg(p)     { return p===4?'var(--green-light)':p===3?'var(--yellow-light)':p===2?'var(--orange-light)':'var(--red-light)'; }
+function ptBorder(p) { return p===4?'var(--green-soft)':p===3?'var(--yellow-soft)':p===2?'var(--orange-soft)':'var(--red-soft)'; }
+
+// ═══════════════════════════════════════════════════════
+//  BUILD CALCULATOR INPUTS (once per month switch)
+// ═══════════════════════════════════════════════════════
+const INPUT_DEFS = [
+  // [label, field, unit, hint, scoreFn, isPercent, isFloat]
+  ['DO Achievement Rate', 'do_rate', '%', 'From Dialer + EyeBeam export', scoreDO, true, false],
+  ['Coaching Completion Rate', 'coaching_rate', '%', '(TL Done=Yes AND Tony OK=Yes) ÷ Total sessions', scoreCoaching, true, false],
+  ['Reports submitted late', 'reports', '', 'Count from task tracker', scoreReports, false, false],
+  ['Sub-tasks completed late', 'subtasks', '', 'Count from task tracker', scoreSubtasks, false, false],
+  ['Same-task follow-ups needed', 'followups', '', 'Count from your manager log', scoreFollowups, false, false],
+  ['Escalations that reached you', 'escalations', '', 'Count from manager log', scoreEscalations, false, false],
+  ['TL Punctuality Rate', 'punctuality', '%', 'From attendance records', scorePunctuality, true, false],
+  ['Team absenteeism vs avg (Δ%)', 'absent_vs_avg', '%', 'Negative = below avg (good). Enter e.g. -2 or 3', scoreAbsent, false, true],
+  ['Complaints from TL (logged)', 'complaints', '', 'Count from manager log / HR', scoreComplaints, false, false],
+  ['Transfer requests from agents', 'transfers', '', 'Count from manager log / HR', scoreTransfers, false, false],
+];
+
+const SECTION_MAP = {
+  do_rate:       { title:'DO Achievement',        color:'var(--blue)',   weight:'×80', bg:'var(--blue-light)',   c:'var(--blue)'   },
+  coaching_rate: { title:'Coaching Effectiveness',color:'var(--green)',  weight:'×7',  bg:'var(--green-light)',  c:'var(--green)'  },
+  reports:       { title:'Business Rules (avg 3)',  color:'var(--yellow)',weight:'×5',  bg:'var(--yellow-light)', c:'var(--yellow)' },
+  escalations:   { title:'Leadership (avg 2)',      color:'var(--orange)',weight:'×4',  bg:'var(--orange-light)', c:'var(--orange)' },
+  absent_vs_avg: { title:'Motivation (avg 3)',       color:'var(--red)',   weight:'×4',  bg:'var(--red-light)',    c:'var(--red)'    },
+};
+
+const SECTION_FIELDS = {
+  do_rate:       ['do_rate'],
+  coaching_rate: ['coaching_rate'],
+  reports:       ['reports','subtasks','followups'],
+  escalations:   ['escalations','punctuality'],
+  absent_vs_avg: ['absent_vs_avg','complaints','transfers'],
+};
+
+function buildCalcInputs(idx) {
+  const m = state.months[idx];
+  let html = `<div class="month-name-row"><input type="text" class="month-name-input" value="${m.name}" placeholder="e.g. January 2025" oninput="state.months[${idx}].name=this.value;document.getElementById('sp-month-label').textContent=this.value;"></div>`;
+
+  Object.entries(SECTION_FIELDS).forEach(([key, fields]) => {
+    const sec = SECTION_MAP[key];
+    html += `<div class="calc-sec">
+      <div class="csh">
+        <div class="csh-dot" style="background:${sec.color};"></div>
+        <div class="csh-title">${sec.title}</div>
+        <div class="csh-weight" style="background:${sec.bg};color:${sec.c};">Weight ${sec.weight}</div>
+      </div>`;
+    fields.forEach(field => {
+      const def = INPUT_DEFS.find(d => d[1] === field);
+      if (!def) return;
+      const [label,,unit,hint,scoreFn,,isFloat] = def;
+      const val = m[field];
+      const pts = scoreFn(val);
+      html += `<div class="cr-row">
+        <div class="cr-lbl">${label}<br><span style="font-size:10.5px;color:var(--muted2);">${hint}</span></div>
+        <input class="cr-num" type="number" ${isFloat?'step="0.1"':''} value="${val}"
+               data-field="${field}" data-midx="${idx}"
+               oninput="onFieldInput(this)">
+        ${unit ? `<span style="font-size:11px;color:var(--muted2);">${unit}</span>` : ''}
+        <div class="cr-pts" id="pts-${field}" style="background:${ptBg(pts)};border-color:${ptBorder(pts)};color:${ptColor(pts)};">${pts}/4</div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  document.getElementById('calc-inputs').innerHTML = html;
+  document.getElementById('sp-month-label').textContent = m.name;
+}
+
+// ═══════════════════════════════════════════════════════
+//  LIVE INPUT HANDLER — only patches badge + score panel
+// ═══════════════════════════════════════════════════════
+function onFieldInput(el) {
+  const field = el.dataset.field;
+  const midx  = parseInt(el.dataset.midx);
+  const raw   = el.value;
+  const val   = raw === '' || raw === '-' ? 0 : parseFloat(raw) || 0;
+  state.months[midx][field] = val;
+
+  // Update just this field's pts badge
+  const def    = INPUT_DEFS.find(d => d[1] === field);
+  const scoreFn= def[4];
+  const pts    = scoreFn(val);
+  const badge  = document.getElementById('pts-' + field);
+  if (badge) {
+    badge.textContent   = pts + '/4';
+    badge.style.background   = ptBg(pts);
+    badge.style.borderColor  = ptBorder(pts);
+    badge.style.color        = ptColor(pts);
+  }
+
+  updateScorePanel();
+}
+
+// ═══════════════════════════════════════════════════════
+//  UPDATE SCORE PANEL (DOM patch only, no rebuild)
+// ═══════════════════════════════════════════════════════
+function updateScorePanel() {
+  const idx    = state.activeMonth;
+  const m      = state.months[idx];
+  const s      = calcMonthScore(m);
+  const t      = Math.round(s.total * 10) / 10;
+  const band   = getBandInfo(s.total);
+  const circ   = 314.2;
+  const offset = circ - (s.total / 100) * circ;
+
+  // ring
+  const ringEl = document.getElementById('ring-fill-el');
+  if (ringEl) {
+    ringEl.setAttribute('stroke-dashoffset', offset.toFixed(1));
+    ringEl.setAttribute('stroke', band.color);
+  }
+
+  // number
+  const numEl = document.getElementById('sp-num');
+  if (numEl) { numEl.textContent = Math.round(s.total); numEl.style.color = band.color; }
+
+  // band label
+  const bandEl = document.getElementById('sp-band');
+  if (bandEl) { bandEl.textContent = band.label; bandEl.style.color = band.color; }
+
+  // breakdown bars
+  const breakdownEl = document.getElementById('sp-breakdown');
+  if (breakdownEl) {
+    breakdownEl.innerHTML = [
+      ['DO',         s.do_s,  80, 'var(--blue)'],
+      ['Coaching',   s.c_s,   7,  'var(--green)'],
+      ['Biz Rules',  s.b_s,   5,  'var(--yellow)'],
+      ['Leadership', s.l_s,   4,  'var(--orange)'],
+      ['Motivation', s.mot_s, 4,  'var(--red)'],
+    ].map(([n, v, mx, c]) => `
+      <div class="spb-row">
+        <div class="spb-name">${n}</div>
+        <div class="spb-track"><div class="spb-fill" style="width:${Math.min(100,(v/mx*100)).toFixed(0)}%;background:${c};"></div></div>
+        <div class="spb-val" style="color:${c};">${v.toFixed(1)}</div>
+      </div>`).join('');
+  }
+
+  // action text
+  const actEl = document.getElementById('sp-action');
+  if (actEl) actEl.innerHTML = `<strong>${band.label}:</strong> ${band.action}`;
+
+  // tl name
+  const tlEl = document.getElementById('sp-tl-name');
+  if (tlEl) {
+    if (state.tlName) { tlEl.textContent = state.tlName; tlEl.style.display = 'block'; }
+    else tlEl.style.display = 'none';
+  }
+
+  // topbar + sidebar
+  document.getElementById('tb-score-pill').textContent = `${m.name}: ${Math.round(s.total)} / 100`;
+  document.getElementById('tb-score-pill').style.color = band.color;
+  document.getElementById('sb-score').textContent = Math.round(s.total) + ' pts';
+  document.getElementById('sb-score').style.color  = band.color;
+  document.getElementById('sb-fill').style.width   = Math.min(100, s.total) + '%';
+  document.getElementById('sb-fill').style.background = `linear-gradient(90deg,${band.color},${band.color}99)`;
+}
+
+function switchMonth(idx, btn) {
+  state.activeMonth = idx;
+  document.querySelectorAll('.month-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  buildCalcInputs(idx);
+  updateScorePanel();
+}
+
+// ═══════════════════════════════════════════════════════
+//  QUARTERLY
+// ═══════════════════════════════════════════════════════
+function buildQuarterly() {
+  const scores = state.months.map(m => calcMonthScore(m));
+  const qAvg   = scores.reduce((a, s) => a + s.total, 0) / 3;
+  const band   = getBandInfo(qAvg);
+  let html = '';
+  scores.forEach((s, i) => {
+    const mb = getBandInfo(s.total);
+    const m  = state.months[i];
+    html += `<div class="qtr-card">
+      <div class="qtr-title">${m.name} <span>${Math.round(s.total)} pts</span></div>
+      <div class="qtr-metric"><span class="qtr-metric-lbl">DO Achievement</span><span class="qtr-metric-val" style="color:var(--blue);">${s.do_s.toFixed(1)}/80</span></div>
+      <div class="qtr-metric"><span class="qtr-metric-lbl">Coaching</span><span class="qtr-metric-val" style="color:var(--green);">${s.c_s.toFixed(1)}/7</span></div>
+      <div class="qtr-metric"><span class="qtr-metric-lbl">Business Rules</span><span class="qtr-metric-val" style="color:var(--yellow);">${s.b_s.toFixed(1)}/5</span></div>
+      <div class="qtr-metric"><span class="qtr-metric-lbl">Leadership</span><span class="qtr-metric-val" style="color:var(--orange);">${s.l_s.toFixed(1)}/4</span></div>
+      <div class="qtr-metric"><span class="qtr-metric-lbl">Motivation</span><span class="qtr-metric-val" style="color:var(--red);">${s.mot_s.toFixed(1)}/4</span></div>
+      <div class="qtr-total-row"><span class="qtr-total-lbl">Monthly Score</span><span class="qtr-total-val" style="color:${mb.color};">${Math.round(s.total)}</span></div>
+    </div>`;
+  });
+  html += `<div class="qtr-card total-card">
+    <div class="qtr-title" style="color:var(--blue);">Quarterly Avg</div>
+    ${scores.map((s,i)=>`<div class="qtr-metric"><span class="qtr-metric-lbl">M${i+1} Score</span><span class="qtr-metric-val" style="color:${getBandInfo(s.total).color};">${Math.round(s.total)}</span></div>`).join('')}
+    <div class="qtr-total-row"><span class="qtr-total-lbl">3-Mo Avg</span><span class="qtr-total-val" style="font-size:26px;">${qAvg.toFixed(1)}</span></div>
+  </div>`;
+  document.getElementById('qtr-grid').innerHTML = html;
+  document.getElementById('qtr-band-txt').textContent = band.label + ' — ' + qAvg.toFixed(1) + ' / 100';
+  document.getElementById('qtr-band-txt').style.color  = band.color;
+  document.getElementById('qtr-action-txt').textContent = band.action;
+}
+
+// ═══════════════════════════════════════════════════════
+//  GOOGLE SHEETS INTEGRATION
+// ═══════════════════════════════════════════════════════
+function saveApiUrl() {
+  localStorage.setItem('tleval_api_url', state.apiUrl);
+}
+
+function setStatus(elId, msg, type) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.textContent = msg;
+  el.className   = 'save-status ' + (type || '');
+  el.style.display = msg ? 'flex' : 'none';
+}
+
+async function sheetsPost(action, data) {
+  const url = state.apiUrl.trim();
+  if (!url) throw new Error('No Apps Script URL set. Paste it in the green bar above.');
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' }, // GAS requires text/plain for CORS
+    body: JSON.stringify({ action, data })
+  });
+  if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  return resp.json();
+}
+
+async function saveToSheets() {
+  const idx = state.activeMonth;
+  const m   = state.months[idx];
+  const s   = calcMonthScore(m);
+  const band= getBandInfo(s.total);
+
+  if (!state.tlName.trim()) { alert('Please enter the TL name first.'); return; }
+
+  const btn = document.querySelector('.sheets-save-btn');
+  btn.disabled = true;
+  setStatus('save-status', '⟳ Saving…', 'saving');
+
+  try {
+    const result = await sheetsPost('save_month', {
+      tlName:      state.tlName,
+      periodFrom:  state.period.from,
+      periodTo:    state.period.to,
+      monthLabel:  m.name,
+      do_rate:        m.do_rate,
+      coaching_rate:  m.coaching_rate,
+      reports:        m.reports,
+      subtasks:       m.subtasks,
+      followups:      m.followups,
+      escalations:    m.escalations,
+      punctuality:    m.punctuality,
+      absent_vs_avg:  m.absent_vs_avg,
+      complaints:     m.complaints,
+      transfers:      m.transfers,
+      scores: {
+        do_s:   s.do_s,
+        c_s:    s.c_s,
+        b_s:    s.b_s,
+        l_s:    s.l_s,
+        mot_s:  s.mot_s,
+        total:  s.total,
+        band:   band.label
+      }
+    });
+    if (result.status === 'ok') {
+      setStatus('save-status', '✓ Saved to Sheets', '');
+    } else {
+      throw new Error(result.message);
+    }
+  } catch (err) {
+    setStatus('save-status', '✗ ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => setStatus('save-status', '', ''), 5000);
+  }
+}
+
+async function saveQuarterlyToSheets() {
+  if (!state.tlName.trim()) { alert('Please enter the TL name first.'); return; }
+  const scores = state.months.map(m => calcMonthScore(m));
+  const qAvg   = scores.reduce((a, s) => a + s.total, 0) / 3;
+  const band   = getBandInfo(qAvg);
+
+  const statusEl = document.getElementById('qtr-save-status');
+  statusEl.textContent = '⟳ Saving…';
+  statusEl.style.color = 'var(--blue)';
+
+  try {
+    const result = await sheetsPost('save_quarterly', {
+      tlName:       state.tlName,
+      periodFrom:   state.period.from,
+      periodTo:     state.period.to,
+      months:       state.months.map((m, i) => ({ label: m.name, score: scores[i].total })),
+      quarterlyAvg: qAvg,
+      band:         band.label,
+      action:       band.action
+    });
+    if (result.status === 'ok') {
+      statusEl.textContent = '✓ Quarterly saved';
+      statusEl.style.color = 'var(--green)';
+    } else throw new Error(result.message);
+  } catch (err) {
+    statusEl.textContent = '✗ ' + err.message;
+    statusEl.style.color = 'var(--red)';
+  } finally {
+    setTimeout(() => { statusEl.textContent = ''; }, 5000);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  PRINT PAGE
+// ═══════════════════════════════════════════════════════
+function buildPrintPage() {
+  const scores = state.months.map(m => calcMonthScore(m));
+  const qAvg   = scores.reduce((a, s) => a + s.total, 0) / 3;
+  const band   = getBandInfo(qAvg);
+  const activeS= scores[state.activeMonth];
+  const activeM= state.months[state.activeMonth];
+  const activeBand = getBandInfo(activeS.total);
+  const tlName = state.tlName || '___________________';
+  const periodTxt = state.period.from ? `${state.period.from} → ${state.period.to}` : 'Period not set';
+  const circ = 125.6;
+
+  const ptRow = (lbl, pts) => `<div class="pp-metric"><span class="pp-metric-lbl">${lbl}</span><span class="pp-metric-pts" style="color:${ptColor(pts)};">${pts}/4</span></div>`;
+
+  let html = `<div class="pp-header">
+    <div class="pp-logo-area">
+      <div class="pp-org">ICO · Team Leader Evaluation</div>
+      <div class="pp-title">Performance Evaluation Report</div>
+      <div class="pp-sub">All metrics from measurable, verifiable data sources</div>
+    </div>
+    <div class="pp-meta">
+      <div class="pp-tl-label">Team Leader</div>
+      <div class="pp-tl-name">${tlName}</div>
+      <div class="pp-period">${periodTxt}</div>
+    </div>
+  </div>
+  <div class="pp-score-banner">
+    <div class="pp-ring-mini">
+      <svg viewBox="0 0 52 52" style="transform:rotate(-90deg);">
+        <circle cx="26" cy="26" r="20" fill="none" stroke="#dbeafe" stroke-width="5"/>
+        <circle cx="26" cy="26" r="20" fill="none" stroke="${band.color}" stroke-width="5"
+          stroke-dasharray="${circ}" stroke-dashoffset="${(circ-(qAvg/100)*circ).toFixed(1)}" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="pp-score-info">
+      <div style="display:flex;align-items:baseline;gap:8px;">
+        <div class="pp-score-big" style="color:${band.color};">${qAvg.toFixed(1)}</div>
+        <div style="font-size:11px;color:#6b7280;">/ 100 · 3-Month Avg</div>
+      </div>
+      <div class="pp-score-band" style="color:${band.color};">${band.label}</div>
+      <div class="pp-score-action">${band.action}</div>
+      <div class="pp-breakdown-inline">
+        ${scores.map((s,i)=>`<span class="pp-bd-item" style="background:${getBandInfo(s.total).color}22;color:${getBandInfo(s.total).color};">${state.months[i].name}: ${Math.round(s.total)}pts</span>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="pp-qtr">
+    <div class="pp-qtr-title"><span>Monthly Breakdown</span><span style="font-family:'JetBrains Mono',monospace;color:${band.color};">Avg: ${qAvg.toFixed(1)} / 100</span></div>
+    <div class="pp-qtr-grid">
+      ${scores.map((s,i)=>{const mb=getBandInfo(s.total);return`<div class="pp-qtr-col">
+        <div class="pp-qtr-month">${state.months[i].name}</div>
+        <div class="pp-qtr-row"><span>DO</span><span style="color:var(--blue);">${s.do_s.toFixed(1)}/80</span></div>
+        <div class="pp-qtr-row"><span>Coaching</span><span style="color:var(--green);">${s.c_s.toFixed(1)}/7</span></div>
+        <div class="pp-qtr-row"><span>Biz Rules</span><span style="color:var(--yellow);">${s.b_s.toFixed(1)}/5</span></div>
+        <div class="pp-qtr-row"><span>Leadership</span><span style="color:var(--orange);">${s.l_s.toFixed(1)}/4</span></div>
+        <div class="pp-qtr-row"><span>Motivation</span><span style="color:var(--red);">${s.mot_s.toFixed(1)}/4</span></div>
+        <div class="pp-qtr-total" style="color:${mb.color};">${Math.round(s.total)} pts — ${mb.label}</div>
+      </div>`;}).join('')}
+      <div class="pp-qtr-col">
+        <div class="pp-qtr-month" style="color:${band.color};">Quarter Avg</div>
+        <div class="pp-qtr-row"><span>DO</span><span style="color:var(--blue);">${(scores.reduce((a,s)=>a+s.do_s,0)/3).toFixed(1)}/80</span></div>
+        <div class="pp-qtr-row"><span>Coaching</span><span style="color:var(--green);">${(scores.reduce((a,s)=>a+s.c_s,0)/3).toFixed(1)}/7</span></div>
+        <div class="pp-qtr-row"><span>Biz Rules</span><span style="color:var(--yellow);">${(scores.reduce((a,s)=>a+s.b_s,0)/3).toFixed(1)}/5</span></div>
+        <div class="pp-qtr-row"><span>Leadership</span><span style="color:var(--orange);">${(scores.reduce((a,s)=>a+s.l_s,0)/3).toFixed(1)}/4</span></div>
+        <div class="pp-qtr-row"><span>Motivation</span><span style="color:var(--red);">${(scores.reduce((a,s)=>a+s.mot_s,0)/3).toFixed(1)}/4</span></div>
+        <div class="pp-qtr-total" style="color:${band.color};">${qAvg.toFixed(1)} — ${band.label}</div>
+      </div>
+    </div>
+  </div>
+  <div class="pp-grid">
+    <div class="pp-section"><div class="pp-sec-title"><div class="pp-sec-dot" style="background:var(--blue);"></div>DO Achievement<div class="pp-sec-weight" style="color:var(--blue);">80%</div></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">DO Rate (${activeM.name})</span><span class="pp-metric-val" style="color:var(--blue);">${activeM.do_rate}%</span></div>
+      ${ptRow('Score',activeS.dp)}
+      <div class="pp-metric"><span class="pp-metric-lbl">Contribution</span><span class="pp-metric-val">${activeS.do_s.toFixed(1)} / 80 pts</span></div>
+    </div>
+    <div class="pp-section"><div class="pp-sec-title"><div class="pp-sec-dot" style="background:var(--green);"></div>Coaching<div class="pp-sec-weight" style="color:var(--green);">7%</div></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Completion Rate</span><span class="pp-metric-val">${activeM.coaching_rate}%</span></div>
+      ${ptRow('Score',activeS.cp)}
+      <div class="pp-metric"><span class="pp-metric-lbl">Contribution</span><span class="pp-metric-val">${activeS.c_s.toFixed(1)} / 7 pts</span></div>
+    </div>
+    <div class="pp-section"><div class="pp-sec-title"><div class="pp-sec-dot" style="background:var(--yellow);"></div>Business Rules<div class="pp-sec-weight" style="color:var(--yellow);">5%</div></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Reports late</span><span class="pp-metric-val">${activeM.reports}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Sub-tasks late</span><span class="pp-metric-val">${activeM.subtasks}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Same-task follow-ups</span><span class="pp-metric-val">${activeM.followups}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Contribution</span><span class="pp-metric-val">${activeS.b_s.toFixed(1)} / 5 pts</span></div>
+    </div>
+    <div class="pp-section"><div class="pp-sec-title"><div class="pp-sec-dot" style="background:var(--orange);"></div>Leadership<div class="pp-sec-weight" style="color:var(--orange);">4%</div></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Escalations to manager</span><span class="pp-metric-val">${activeM.escalations}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Punctuality rate</span><span class="pp-metric-val">${activeM.punctuality}%</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Contribution</span><span class="pp-metric-val">${activeS.l_s.toFixed(1)} / 4 pts</span></div>
+    </div>
+    <div class="pp-section"><div class="pp-sec-title"><div class="pp-sec-dot" style="background:var(--red);"></div>Motivation<div class="pp-sec-weight" style="color:var(--red);">4%</div></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Absent vs avg (Δ%)</span><span class="pp-metric-val">${activeM.absent_vs_avg>0?'+':''}${activeM.absent_vs_avg}%</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">TL Complaints</span><span class="pp-metric-val">${activeM.complaints}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Transfer requests</span><span class="pp-metric-val">${activeM.transfers}</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl">Contribution</span><span class="pp-metric-val">${activeS.mot_s.toFixed(1)} / 4 pts</span></div>
+    </div>
+    <div class="pp-section" style="background:#eff6ff;border-color:#dbeafe;">
+      <div class="pp-sec-title" style="color:var(--blue);">Rating Reference</div>
+      <div class="pp-metric"><span class="pp-metric-lbl" style="color:var(--green);">90–100 Exceptional</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl" style="color:#10b981;">80–89 Strong</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl" style="color:var(--yellow);">70–79 Meets Exp.</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl" style="color:var(--orange);">60–69 Needs Impr.</span></div>
+      <div class="pp-metric"><span class="pp-metric-lbl" style="color:var(--red);">Below 60 At Risk</span></div>
+    </div>
+  </div>
+  <div class="pp-sig">
+    <div class="pp-sig-field">Manager Signature</div>
+    <div class="pp-sig-field">Team Leader Signature</div>
+    <div class="pp-sig-field">Date</div>
+  </div>
+  <div class="pp-footer">ICO · TL Evaluation Framework · ${periodTxt} · Generated ${new Date().toLocaleDateString('en-GB')} · All scores from verifiable data sources</div>`;
+
+  document.getElementById('print-output').innerHTML = html;
+}
+
+function openPrint() {
+  buildPrintPage();
+  go('print', document.querySelector('[data-sec=print]'));
+  setTimeout(() => window.print(), 300);
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+buildCalcInputs(0);
+updateScorePanel();
+
+// Restore saved API URL
+if (state.apiUrl) {
+  const urlInput = document.getElementById('api-url');
+  if (urlInput) urlInput.value = state.apiUrl;
+}
+</script>
+</body>
+</html>
